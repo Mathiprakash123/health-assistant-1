@@ -6,7 +6,6 @@ const Navbar = () => {
 
   const handleSignOut = () => {
     setIsAuthenticated(false);
-    // Here you would also clear any authentication tokens or session data
     console.log("User signed out");
   };
 
@@ -29,6 +28,9 @@ const Navbar = () => {
         </NavLink>
         <NavLink to={"/medical"} className={handleActive}>
           Health Assistant
+        </NavLink>
+        <NavLink to={"/profile"} className={handleActive}>
+          Profile
         </NavLink>
       </div>
       <div className="mt-6 space-x-9">

@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [login, setLogin] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!username) {
-      newErrors.username = "User Name is required";
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email address is invalid";
     }
 
     if (!password) {
@@ -24,22 +25,43 @@ const LoginPage = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      console.log("Form submitted");
-      setLogin(true);
-      navigate("/");
+      try {
+        const response = await fetch("http://localhost:8080/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          const result = await response.text();
+          if (result === "Login successful") {
+            console.log("Login successful");
+            navigate("/");
+          } else {
+            setErrors({ general: "Invalid email or password" });
+          }
+        } else {
+          setErrors({ general: "Something went wrong. Please try again later." });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setErrors({ general: "Something went wrong. Please try again later." });
+      }
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 ">
-      <div className=" flex bg-white m-auto items-center p-10 w-[80%] shadow-lg rounded-lg">
-        <div className="flex items-center ">
+    <div className="flex min-h-screen bg-gray-100">
+      <div className="flex bg-white m-auto items-center p-10 w-[80%] shadow-lg rounded-lg">
+        <div className="flex items-center">
           <img
             src="src/assets/Designer.png"
             alt="Description of the image"
@@ -49,7 +71,7 @@ const LoginPage = () => {
         <div className="flex flex-1 items-center justify-center">
           <form
             onSubmit={handleSubmit}
-            className="rounded-lg w-full max-w-md p-8 "
+            className="rounded-lg w-full max-w-md p-8"
           >
             <div className="text-center mb-8">
               <img
@@ -60,24 +82,30 @@ const LoginPage = () => {
               <h1 className="text-4xl font-bold text-black">Login</h1>
             </div>
 
+            {errors.general && (
+              <div className="mb-4 text-red-500 text-center">
+                {errors.general}
+              </div>
+            )}
+
             <div className="mb-6">
               <label
-                htmlFor="username"
+                htmlFor="email"
                 className={`block mb-2 text-lg ${
-                  errors.username ? "text-red-500" : "text-gray-700"
+                  errors.email ? "text-red-500" : "text-gray-700"
                 }`}
               >
-                {errors.username || "User Name"}
+                {errors.email || "Email"}
               </label>
               <input
                 type="text"
-                id="username"
+                id="email"
                 className={` ${
-                  errors.username ? "border-red-500" : "border-gray-300"
-                } p-3 rounded-lg w-full outline-none  bg-gray-100`}
-                placeholder="Enter User Name"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                  errors.email ? "border-red-500" : "border-gray-300"
+                } p-3 rounded-lg w-full outline-none bg-gray-100`}
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 

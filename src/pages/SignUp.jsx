@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -51,14 +52,26 @@ const SignupPage = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      console.log("Form submitted");
-      navigate("/");
+      try {
+        const response = await axios.post('http://localhost:8080/register', {
+          firstname: name,
+          email: email,
+          password: password,
+          age: age,
+          height: height,
+          weight: weight
+        });
+        console.log(response.data);
+        navigate("/");
+      } catch (error) {
+        console.error("There was an error registering the user!", error);
+      }
     }
   };
 

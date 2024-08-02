@@ -12,6 +12,8 @@ import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import Calculator from "./extrapages/Calculator";
 import MonthlyReport from "./extrapages/MonthlyReport";
+import { HealthProvider } from "./contextfiles/HealthProvider";
+import Profile from "./pages/Profile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,13 +50,19 @@ const router = createBrowserRouter([
       {
         path:'/report',
         element:<MonthlyReport/>
+      },{
+        path:'/profile',
+        element:<Profile/>
       }
+
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <HealthProvider>
     <RouterProvider router={router} />
+    </HealthProvider>
   </React.StrictMode>
 );
