@@ -91,11 +91,7 @@ const SignupPage = () => {
             className="rounded-lg "
           >
             <div className="text-center mb-8">
-              <img
-                src="src/assets/3-removebg-preview.png"
-                className="w-32 h-32 mx-auto mb-4"
-                alt=""
-              />
+            
               <h1 className="text-4xl font-bold text-black">Sign Up</h1>
             </div>
 

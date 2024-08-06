@@ -12,25 +12,26 @@ const Navbar = () => {
   const handleActive = ({ isActive }) => (isActive ? "text-orange-700" : "");
 
   return (
-    <div className="flex justify-between pl-10 pr-10 shadow-md space-x-2">
+    <div className="flex justify-between px-32  space-x-2 text-gray-700 ">
       <Link to={"/"}>
-        <img src="src/assets/3-removebg-preview.png" className="w-20 h-20" alt="Logo" />
+        <img
+          src="src/assets/logo-no-background.png"
+          className="w-40 h-20 object-contain mt-3"
+          alt="Logo"
+        />
       </Link>
       <div className="space-x-9 mt-10 font-medium">
         <NavLink to={"/"} className={handleActive}>
           HomePage
         </NavLink>
-        <NavLink to={"/nutrition"} className={handleActive}>
-        Calorie Calculator
+        <NavLink to={"/dashboard"} className={handleActive}>
+          Dash Board
         </NavLink>
         <NavLink to={"/fitness"} className={handleActive}>
           Fitness
         </NavLink>
         <NavLink to={"/medical"} className={handleActive}>
           Health Assistant
-        </NavLink>
-        <NavLink to={"/profile"} className={handleActive}>
-          Profile
         </NavLink>
       </div>
       <div className="mt-6 space-x-9">
@@ -43,15 +44,12 @@ const Navbar = () => {
           </button>
         ) : (
           <>
-            <Link to={"/login"}>
-              <button className="bg-black p-3 text-white rounded-lg font-bold">
-                Login
-              </button>
-            </Link>
             <Link to={"/signup"}>
-              <button className="bg-[#225b5b] p-3 text-white rounded-lg font-bold">
-                Sign Up
-              </button>
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/028/597/535/original/african-black-male-avatar-character-cartoon-profile-picture-ai-generated-file-no-background-png.png"
+                className="w-[60px] bg-[#239d80] rounded-full  px-2 py-1"
+                alt=""
+              />
             </Link>
           </>
         )}

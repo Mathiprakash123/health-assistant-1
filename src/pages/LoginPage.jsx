@@ -7,54 +7,31 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Email address is invalid";
-    }
-
-    if (!password) {
-      newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long";
-    }
-
-    return newErrors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      try {
-        const response = await fetch("http://localhost:8080/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
+    try {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        if (response.ok) {
-          const result = await response.text();
-          if (result === "Login successful") {
-            console.log("Login successful");
-            navigate("/");
-          } else {
-            setErrors({ general: "Invalid email or password" });
-          }
+      if (response.ok) {
+        const result = await response.text();
+        if (result === "Login successful") {
+          console.log("Login successful");
+          navigate("/");
         } else {
-          setErrors({ general: "Something went wrong. Please try again later." });
+          setErrors({ general: "Invalid email or password" });
         }
-      } catch (error) {
-        console.error("Error:", error);
+      } else {
         setErrors({ general: "Something went wrong. Please try again later." });
       }
+    } catch (error) {
+      console.error("Error:", error);
+      setErrors({ general: "Something went wrong. Please try again later." });
     }
   };
 
@@ -71,14 +48,10 @@ const LoginPage = () => {
         <div className="flex flex-1 items-center justify-center">
           <form
             onSubmit={handleSubmit}
-            className="rounded-lg w-full max-w-md p-8"
+            className="rounded-lg w-full max-w-md p-8 space-y-10"
           >
             <div className="text-center mb-8">
-              <img
-                src="src/assets/3-removebg-preview.png"
-                className="w-32 h-32 mx-auto mb-4"
-                alt=""
-              />
+            
               <h1 className="text-4xl font-bold text-black">Login</h1>
             </div>
 

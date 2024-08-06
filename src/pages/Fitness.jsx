@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ExerciseCard from '../extrapages/ExerciseCard';
+import TrainerCard from '../extrapages/TrainerCard';
+import BookAppointment from '../extrapages/BookAppointment';
 
 const FitnessPage = () => {
   const [trainers, setTrainers] = useState([]);
   const [location, setLocation] = useState(null);
+  const [selectedTrainer, setSelectedTrainer] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -71,51 +77,35 @@ const FitnessPage = () => {
       description: 'A lower-body exercise that works the hips, glutes, quads, hamstrings, and core.',
       steps: ['Stand upright with your feet together.', 'Take a big step forward with your right leg and lower your body until your right thigh is parallel to the floor.', 'Push back up to the starting position. Repeat with the left leg.']
     },
-    
   ];
 
+  const handleCallTrainer = (trainer) => {
+    console.log(`Calling ${trainer.name} at ${trainer.contact}`);
+  };
+
+  const handleBookAppointment = (trainer) => {
+    setSelectedTrainer(trainer);
+    navigate('/book-appointment', { state: { trainer } });
+  };
+
   return (
-    <div className="mx-auto p-4 bg-gray-100 px-32">
-      <h1 className="text-3xl font-bold mb-4 text-blue-600">Morning Exercises</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="mx-auto p-4 my-20 px-16">
+      <h1 className="font-bold mb-4 text-6xl">Morning Exercises</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
         {exercises.map((exercise, index) => (
-          <div key={index} className="p-4 bg-white rounded-lg shadow-md">
-            <img src={exercise.image} alt={exercise.name} className="w-full h-80 object-cover mb-4 rounded-md" />
-            <h2 className="text-xl font-semibold">{exercise.name}</h2>
-            <p>{exercise.description}</p>
-            <ul className="list-disc pl-5 mt-2">
-              {exercise.steps.map((step, stepIndex) => (
-                <li key={stepIndex}>{step}</li>
-              ))}
-            </ul>
-          </div>
+          <ExerciseCard key={index} exercise={exercise} />
         ))}
       </div>
       <h1 className="text-3xl font-bold mt-8 text-blue-600 mb-4">Nearby Fitness and Yoga Trainers</h1>
       {location ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {trainers.map((trainer, index) => (
-            <div key={index} className="p-4 bg-white rounded-lg shadow-md">
-              <img src={trainer.image} alt={trainer.name} className="w-full h-72 object-cover mb-4 rounded-md" />
-              <h2 className="text-xl font-semibold">{trainer.name}</h2>
-              <p>{trainer.specialty}</p>
-              <p>{trainer.distance} km away</p>
-              <p>Contact: {trainer.contact}</p>
-              <div className="mt-3">
-                    <button
-                      onClick={() => handleCallDoctor(doctor)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2 shadow-md transition duration-300"
-                    >
-                      Call
-                    </button>
-                    <button
-                      onClick={() => handleBookAppointment(doctor)}
-                      className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md transition duration-300"
-                    >
-                      Book Appointment
-                    </button>
-                  </div>
-            </div>
+            <TrainerCard
+              key={index}
+              trainer={trainer}
+              handleCallTrainer={handleCallTrainer}
+              handleBookAppointment={handleBookAppointment}
+            />
           ))}
         </div>
       ) : (

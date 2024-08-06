@@ -1,19 +1,24 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter } from "react-router-dom";
-import { RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Layout from "./layout/Layout";
-import HomePage from "./pages/HomePage";
+import Home from "./pages/Home";
 import Nutrition from "./pages/Nutrition";
 import Fitness from "./pages/Fitness";
 import MedicalCare from "./pages/MedicalCare";
-import React from "react";
 import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import Calculator from "./extrapages/Calculator";
 import MonthlyReport from "./extrapages/MonthlyReport";
-import { HealthProvider } from "./contextfiles/HealthProvider";
 import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
+import BookAppointment from "./extrapages/BookAppointment";
+import DoctorDashboard from "./Doctor/DoctorDashboard";
+import PatientsPage from "./Doctor/mainpages/PatientsPage";
+import DoctorPageLayout from "./Doctor/DoctorPageLayout";
+import DoctorPayment from "./Doctor/DoctorPayment";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,48 +26,72 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: <Home />,
       },
       {
-        path: "/nutrition",
+        path: "nutrition",
         element: <Nutrition />,
       },
       {
-        path: "/fitness",
+        path: "fitness",
         element: <Fitness />,
       },
       {
-        path: "/medical",
+        path: "medical",
         element: <MedicalCare />,
       },
       {
-        path: "/login",
+        path: "login",
         element: <LoginPage />,
       },
       {
-        path: "/signup",
+        path: "signup",
         element: <SignUp />,
       },
       {
-        path:'/calculate',
-        element:<Calculator/>
+        path: "calculate",
+        element: <Calculator />,
       },
       {
-        path:'/report',
-        element:<MonthlyReport/>
-      },{
-        path:'/profile',
-        element:<Profile/>
-      }
-
+        path: "report",
+        element: <MonthlyReport />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "book-appointment",
+        element: <BookAppointment />,
+      },
+    ],
+  },
+  {
+    path: "doctor",
+    element: < DoctorPageLayout/>,
+    children: [
+      {
+        path: "",
+        element: <DoctorDashboard />,
+      },
+      {
+        path: "patients",
+        element: <PatientsPage />,
+      },
+      {
+        path: "bills",
+        element: <DoctorPayment />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HealthProvider>
     <RouterProvider router={router} />
-    </HealthProvider>
   </React.StrictMode>
 );
