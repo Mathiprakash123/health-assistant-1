@@ -1,9 +1,11 @@
 import React from "react";
-import DoctorNavBar from "./DoctorNavBar";
-import HeaderCard from "./HeaderCard";
-import PieChart from "./PieChart"; // Removed duplicate import
-import PatientList from "./PatientList";
-import AppointmentRequest from "./mainpages/AppointmentRequest";
+
+import DoctorNavBar from "../Doctor/DoctorNavBar";
+import PatientList from "../Doctor/PatientList";
+import AppointmentRequest from "../Doctor/mainpages/AppointmentRequest";
+import PieChart from "../Doctor/PieChart";
+import HeaderCard from "../Doctor/HeaderCard";
+
 
 const DoctorDashboard = () => {
   const now = new Date();

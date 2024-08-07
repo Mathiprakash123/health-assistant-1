@@ -64,25 +64,25 @@ const DoctorPayment = () => {
     <div className="">
       <DoctorNavBar name={"Bills"} />
       <div>
-        <table className="bg-white mx-auto mt-32 w-[1200px] shadow-md">
+        <table className="bg-blue-50 mx-auto mt-32 w-[1200px] shadow-md">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 #
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Patient's Name
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Visit Type
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Fees
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Paid Status
               </th>
             </tr>

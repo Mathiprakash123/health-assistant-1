@@ -18,6 +18,10 @@ import DoctorDashboard from "./Doctor/DoctorDashboard";
 import PatientsPage from "./Doctor/mainpages/PatientsPage";
 import DoctorPageLayout from "./Doctor/DoctorPageLayout";
 import DoctorPayment from "./Doctor/DoctorPayment";
+import TrainerLayout from "./Trainer/TrainerLayout";
+import TrainerSidepanel from "./Trainer/TrainerSidepanel";
+import TrainerDashboard from "./Trainer/TrainerDashboard";
+import ClientsPage from "./Trainer/ClientsPage";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +85,24 @@ const router = createBrowserRouter([
       {
         path: "patients",
         element: <PatientsPage />,
+      },
+      {
+        path: "bills",
+        element: <DoctorPayment />,
+      },
+    ],
+  },
+  {
+    path: "trainer",
+    element: < TrainerLayout/>,
+    children: [
+      {
+        path: "",
+        element: <TrainerDashboard />,
+      },
+      {
+        path: "clients",
+        element: <ClientsPage />,
       },
       {
         path: "bills",
