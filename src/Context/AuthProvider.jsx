@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState(null);
 
+  
  
   const logout = () => setIsAuthenticated(false);
   const updateEmail = (email) => setEmail(email);
