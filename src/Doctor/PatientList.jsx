@@ -39,7 +39,7 @@ const patients = [
   
 ];
 
-const PatientList = () => {
+const PatientList = ({name}) => {
   return (
     <div className="bg-blue-50 px-6 py-4 w-[450px] h-fit mx-10 my-8 rounded-lg shadow-md">
       <h1 className="text-blue-600 text-xl font-semibold mb-4">Today's Appointments</h1>

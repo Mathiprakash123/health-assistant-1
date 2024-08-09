@@ -74,7 +74,8 @@ const DoctorDashboard = () => {
       </div>
       <div className="bg-gray-50 mt-10 flex justify-between">
         <PieChart />
-        <PatientList />
+        <PatientList
+        name='patient' />
         <AppointmentRequest />
       </div>
     </div>

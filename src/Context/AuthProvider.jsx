@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
  
   const logout = () => setIsAuthenticated(false);
   const updateEmail = (email) => setEmail(email);
+  
   const login = (userEmail) => {
     setEmail(userEmail);
     setIsAuthenticated(true);
