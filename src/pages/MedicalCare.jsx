@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthProvider"; // Make sure this is the correct path
 
 const Healthcare = () => {
   const [user, setUser] = useState({
@@ -9,9 +11,19 @@ const Healthcare = () => {
     medicalIllness: "Diabetes",
   });
   const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Mock function to simulate fetching doctors based on user's medical condition
+    if (!isAuthenticated) {
+      navigate('/login'); 
+    } else {
+      setLoading(false); 
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
     const fetchDoctors = async () => {
       const mockDoctors = [
         {
@@ -45,9 +57,13 @@ const Healthcare = () => {
     alert(`Booking appointment with Dr. ${doctor.name}`);
   };
 
+  if (loading) {
+    return <p>Loading...</p>; // Show loading message while checking authentication
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <div className="mx-32 mx-auto rounded-lg p-8">
+      <div className="mx-auto max-w-4xl rounded-lg p-8 bg-white shadow-lg">
         <h1 className="text-3xl font-extrabold text-blue-700 mb-6 text-center">
           Healthcare Assistant
         </h1>
@@ -55,14 +71,14 @@ const Healthcare = () => {
           <h2 className="text-2xl font-bold text-blue-600 mb-4">
             User Information
           </h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <p className="bg-white p-4 rounded-lg shadow-md">
               <strong>Name:</strong> {user.name}
             </p>
             <p className="bg-white p-4 rounded-lg shadow-md">
               <strong>Age:</strong> {user.age}
             </p>
-            <p className=" bg-white p-4 rounded-lg shadow-md">
+            <p className="bg-white p-4 rounded-lg shadow-md">
               <strong>Height:</strong> {user.height} cm
             </p>
             <p className="bg-white p-4 rounded-lg shadow-md">
@@ -79,10 +95,10 @@ const Healthcare = () => {
             doctors.map((doctor) => (
               <div
                 key={doctor.id}
-                className="mb-6 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-100 transition duration-300 flex space-x-16 space-y-10"
+                className="mb-6 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-100 transition duration-300 flex flex-col md:flex-row items-center"
               >
-                <img src={doctor.img} alt="" className="w-[400px] h-[400px]" />
-                <div className="space-y-5">
+                <img src={doctor.img} alt="" className="w-48 h-48 object-cover rounded-lg mb-4 md:mb-0 md:mr-6" />
+                <div className="flex-1 space-y-5">
                   <h3 className="text-xl font-bold text-blue-700 mb-2">
                     {doctor.name}
                   </h3>
@@ -95,11 +111,10 @@ const Healthcare = () => {
                   <p className="mb-3">
                     <strong>Description:</strong> {doctor.description}
                   </p>
-               
-                  <div className="mt-3">
+                  <div className="mt-3 flex space-x-2">
                     <button
                       onClick={() => handleCallDoctor(doctor)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2 shadow-md transition duration-300"
+                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md transition duration-300"
                     >
                       Call
                     </button>

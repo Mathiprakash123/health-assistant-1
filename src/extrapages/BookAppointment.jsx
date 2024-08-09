@@ -12,7 +12,7 @@ const BookAppointment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Appointment booked with ${trainer.name} for ${goal}`);
+   alert(`Appointment booked with ${trainer.name} for ${goal}`);
   };
 
   return (

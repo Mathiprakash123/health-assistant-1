@@ -3,24 +3,37 @@ import { useNavigate } from 'react-router-dom';
 import ExerciseCard from '../extrapages/ExerciseCard';
 import TrainerCard from '../extrapages/TrainerCard';
 import BookAppointment from '../extrapages/BookAppointment';
+import { useAuth } from '../Context/AuthProvider';
 
 const FitnessPage = () => {
   const [trainers, setTrainers] = useState([]);
   const [location, setLocation] = useState(null);
   const [selectedTrainer, setSelectedTrainer] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      (error) => console.error('Error getting location', error)
-    );
-  }, []);
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login if not authenticated
+    } else {
+      setLoading(false); // Set loading to false once authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => console.error('Error getting location', error)
+      );
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (location) {
@@ -87,6 +100,10 @@ const FitnessPage = () => {
     setSelectedTrainer(trainer);
     navigate('/book-appointment', { state: { trainer } });
   };
+
+  if (loading) {
+    return <p>Loading...</p>; // Show loading message while checking authentication
+  }
 
   return (
     <div className="mx-auto p-4 my-20 px-16">

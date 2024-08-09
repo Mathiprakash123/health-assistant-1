@@ -22,6 +22,8 @@ import TrainerLayout from "./Trainer/TrainerLayout";
 import TrainerSidepanel from "./Trainer/TrainerSidepanel";
 import TrainerDashboard from "./Trainer/TrainerDashboard";
 import ClientsPage from "./Trainer/ClientsPage";
+import { AuthProvider } from "./Context/AuthProvider";
+import DoctorSignUp from "./Doctor/DoctorSignUp";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +85,10 @@ const router = createBrowserRouter([
         element: <DoctorDashboard />,
       },
       {
+        path: "doctorregiser",
+        element: <DoctorSignUp />,
+      },
+      {
         path: "patients",
         element: <PatientsPage />,
       },
@@ -114,6 +120,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <AuthProvider>
     <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );

@@ -78,7 +78,9 @@ const DoctorDashboard = () => {
         <PieChart />
         <PatientList />
         <AppointmentRequest />
+        
       </div>
+    
     </div>
   );
 };

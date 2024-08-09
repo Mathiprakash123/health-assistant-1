@@ -11,7 +11,8 @@ const Footer = () => {
           <Link to={'/nutrition'} className="text-blue-400 hover:text-blue-500 mx-2">Calorie Calculator</Link>
           <Link to={'/fitness'} className="text-blue-400 hover:text-blue-500 mx-2">Fitness</Link>
           <Link to={'/medical'} className="text-blue-400 hover:text-blue-500 mx-2">Health Assistant</Link>
-          <Link to={'/profile'} className="text-blue-400 hover:text-blue-500 mx-2">Profile</Link>
+          <Link to={'doctorregiser'} className="text-blue-400 hover:text-blue-500 mx-2">Doctor Sign Up</Link>
+
 
         </div>
         <p className="text-sm">&copy; 2024 Your Health App. All rights reserved.</p>

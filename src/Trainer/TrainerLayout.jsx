@@ -6,6 +6,7 @@ const TrainerLayout = () => {
   return (
     <div> <div>
     <TrainerSidepanel />
+    
    <Outlet/>
 </div></div>
   )

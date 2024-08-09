@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthProvider";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { login, updateEmail } = useAuth();
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +27,8 @@ const LoginPage = () => {
         if (result === "Login successful") {
           console.log("Login successful");
           navigate("/");
+          login(); 
+          updateEmail(email); 
         } else {
           setErrors({ general: "Invalid email or password" });
         }
@@ -51,7 +57,6 @@ const LoginPage = () => {
             className="rounded-lg w-full max-w-md p-8 space-y-10"
           >
             <div className="text-center mb-8">
-            
               <h1 className="text-4xl font-bold text-black">Login</h1>
             </div>
 

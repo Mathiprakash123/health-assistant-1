@@ -1,15 +1,30 @@
-// HomePage.js
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import DashboardItem from "../extrapages/DashboardItem";
-
+import { useAuth } from "../Context/AuthProvider"; // Make sure this is the correct path
 
 const Dashboard = () => {
+  const { isAuthenticated } = useAuth(); // Correctly use the hook within the component
+  const [loading, setLoading] = useState(true); // Handle loading state
+  const navigate = useNavigate(); // Navigate hook for redirection
+
   const userName = "Mathiprakash";
   const stepsCount = 5000;
   const sleepCycle = "7 hours";
   const digitalWellbeing = "3 hours";
   const rewards = ["Completed 7 hours/day", "Walking 5000 steps"];
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login if not authenticated
+    } else {
+      setLoading(false); // Set loading to false once authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (loading) {
+    return <p>Loading...</p>; // Show loading message while checking authentication
+  }
 
   return (
     <div className="min-h-screen p-6">
@@ -26,7 +41,6 @@ const Dashboard = () => {
       </div>
       <p className="text-primary mt-20 mx-10 text-4xl font-bold">Daily Activities </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mx-10 text-white my-5">
-       
         <DashboardItem
           title="Steps Count"
           value={`${stepsCount} steps`}
@@ -46,11 +60,10 @@ const Dashboard = () => {
           value={`${digitalWellbeing} screen time`}
           imageSrc="https://swgfl.org.uk/assets/images/digital-wellbeing-1-m.jpg"
           altText="Digital Wellbeing"
-          
         />
         <DashboardItem
           title="Rewards"
-          value={rewards}
+          value={rewards.join(", ")} // Join rewards array into a single string for display
           imageSrc="https://media.istockphoto.com/id/1369741435/photo/hands-holding-golden-trophy-cup-on-white-background.jpg?s=612x612&w=0&k=20&c=3vsysxc4ZAo7tCzcyJscBeXcofP-uzg6E8LVu2Vt9Bw="
           altText="Rewards"
         />

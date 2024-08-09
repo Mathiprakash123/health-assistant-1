@@ -1,19 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../Context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
-    name: 'Mathiprakash',
-    age: 30,
-    height: '180 cm',
-    weight: '75 kg',
-    bloodGroup: 'O+',
-    medicalConditions: ['None'],
-    profilePicture: 'https://static.vecteezy.com/system/resources/previews/028/597/535/original/african-black-male-avatar-character-cartoon-profile-picture-ai-generated-file-no-background-png.png'
+    firstname: '',
+    age: 0,
+    height: 0,
+    weight: 0,
+    bloodGroup: '',
+    medicalConditions: [],
   });
 
-  const [isEditing, setIsEditing] = useState(false);
+  const { isAuthenticated, logout, email } = useAuth();
+  const navigate = useNavigate();
 
+  const [isEditing, setIsEditing] = useState(false);
   const [editableProfile, setEditableProfile] = useState({ ...profile });
+
+  useEffect(() => {
+    if (email) {
+      axios.get(`http://localhost:8080/profile`, { params: { email: email } })
+        .then(response => {
+          const data = response.data;
+          setProfile({
+            ...data,
+            medicalConditions: data.medicalConditions || []
+          });
+          setEditableProfile({
+            ...data,
+            medicalConditions: data.medicalConditions || []
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching profile:', error);
+        });
+    }
+  }, [email]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,105 +54,60 @@ const ProfilePage = () => {
     setIsEditing(false);
   };
 
+  const handleSignOut = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
-    <div className="h-[90vh] bg-gray-100 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full mx-32 h-fit flex items-center">
-        <div className=" mb-6 w-[400px]">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl">
+        <div className="flex flex-col items-center mb-8">
           <img
-            src={profile.profilePicture}
+            src='https://static.vecteezy.com/system/resources/previews/028/597/535/original/african-black-male-avatar-character-cartoon-profile-picture-ai-generated-file-no-background-png.png'
             alt="Profile"
-            className="w-[400px] rounded-full   "
+            className="w-32 h-32 rounded-full object-cover"
           />
-          <div className="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow-md cursor-pointer">
-            <svg
-              className="w-6 h-6 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15.232 12.232a2 2 0 11-2.464-2.464m4.928 0a2 2 0 11-2.464 2.464M12 4v8m0 4v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17"
-              ></path>
-            </svg>
+          <div className="relative mt-4">
+            <div className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md cursor-pointer">
+              <svg
+                className="w-6 h-6 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15.232 12.232a2 2 0 11-2.464-2.464m4.928 0a2 2 0 11-2.464 2.464M12 4v8m0 4v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17"
+                ></path>
+              </svg>
+            </div>
           </div>
         </div>
-        <div className="w-full space-y-4">
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">Name</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="name"
-                value={editableProfile.name}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md p-3 w-full"
-              />
-            ) : (
-              <p className="text-gray-800 text-lg">{profile.name}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">Age</label>
-            {isEditing ? (
-              <input
-                type="number"
-                name="age"
-                value={editableProfile.age}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md p-3 w-full"
-              />
-            ) : (
-              <p className="text-gray-800 text-lg">{profile.age}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">Height</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="height"
-                value={editableProfile.height}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md p-3 w-full"
-              />
-            ) : (
-              <p className="text-gray-800 text-lg">{profile.height}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">Weight</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="weight"
-                value={editableProfile.weight}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md p-3 w-full"
-              />
-            ) : (
-              <p className="text-gray-800 text-lg">{profile.weight}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">Blood Group</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="bloodGroup"
-                value={editableProfile.bloodGroup}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md p-3 w-full"
-              />
-            ) : (
-              <p className="text-gray-800 text-lg">{profile.bloodGroup}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">Medical Conditions</label>
+        <div className="space-y-6">
+          {Object.keys(profile).map((key) => (
+            key !== 'medicalConditions' && (
+              <div key={key} className={`flex items-center ${isEditing ? '' : 'border-b-2 border-gray-300'} pb-4`}>
+                <label className="text-gray-600 text-sm font-medium w-1/3">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+                {isEditing ? (
+                  <input
+                    type={key === 'age' || key === 'height' || key === 'weight' ? 'number' : 'text'}
+                    name={key}
+                    value={editableProfile[key]}
+                    onChange={handleChange}
+                    className="border border-gray-300 rounded-md p-3 w-2/3"
+                  />
+                ) : (
+                  <p className="text-gray-800 text-lg w-2/3">{profile[key]}</p>
+                )}
+              </div>
+            )
+          ))}
+          <div className={`flex flex-col space-y-4 ${isEditing ? '' : 'border-b-2 border-gray-300'} pb-4`}>
+            <label className="text-gray-600 text-sm font-medium mb-1">Medical Conditions:</label>
             {isEditing ? (
               <textarea
                 name="medicalConditions"
@@ -139,7 +118,7 @@ const ProfilePage = () => {
               />
             ) : (
               <ul className="text-gray-800 text-lg list-disc pl-5">
-                {profile.medicalConditions.map((condition, index) => (
+                {(profile.medicalConditions || []).map((condition, index) => (
                   <li key={index}>{condition}</li>
                 ))}
               </ul>
@@ -170,6 +149,14 @@ const ProfilePage = () => {
               </button>
             )}
           </div>
+          {isAuthenticated && (
+            <button
+              onClick={handleSignOut}
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            >
+              Sign Out
+            </button>
+          )}
         </div>
       </div>
     </div>
