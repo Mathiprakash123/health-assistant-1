@@ -2,32 +2,40 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthProvider";
 
-const LoginPage = () => {
+const TrianerLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login, updateEmail, updateName } = useAuth();
-
+  const { login, signupEmail } = useAuth();
+  const { setSignupEmailAndLogin } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("Submitted Email:", email);  // Log email
+    console.log("Submitted Password:", password);  // Log password
+
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch("http://localhost:8080/dr_login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password }),  // Send the email and password
       });
 
+      console.log("Response Status:", response.status);  // Log response status
+
       if (response.ok) {
-        const result = await response.json(); // Assuming response is JSON
-        if (result.message === "Login successful") {
+        const result = await response.text();
+        console.log("Response Text:", result);  // Log response text
+
+        if (result === "Login successful") {
           console.log("Login successful");
-          navigate("/");
-          login(email);
-          updateEmail(email);
-          updateName(result.name || "Guest"); // Update name based on response
+          navigate("/doctor");
+          setSignupEmailAndLogin(email); // Set signup email and login
+          console.log(email);
+          login(); 
         } else {
           setErrors({ general: "Invalid email or password" });
         }
@@ -120,4 +128,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default TrianerLogin;

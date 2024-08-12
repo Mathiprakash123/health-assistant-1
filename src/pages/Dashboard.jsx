@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DashboardItem from "../extrapages/DashboardItem";
-import { useAuth } from "../Context/AuthProvider"; // Make sure this is the correct path
+import { useAuth } from "../Context/AuthProvider";
 
 const Dashboard = () => {
-  const { isAuthenticated } = useAuth(); // Correctly use the hook within the component
-  const [loading, setLoading] = useState(true); // Handle loading state
-  const navigate = useNavigate(); // Navigate hook for redirection
+  const { isAuthenticated, name } = useAuth(); // Correctly use the hook and destructure name
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const userName = "Mathiprakash";
   const stepsCount = 5000;
   const sleepCycle = "7 hours";
   const digitalWellbeing = "3 hours";
@@ -16,20 +15,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login'); // Redirect to login if not authenticated
+      navigate('/login');
     } else {
-      setLoading(false); // Set loading to false once authenticated
+      setLoading(false);
     }
   }, [isAuthenticated, navigate]);
 
   if (loading) {
-    return <p>Loading...</p>; // Show loading message while checking authentication
+    return <p>Loading...</p>;
   }
 
   return (
     <div className="min-h-screen p-6">
       <div className="bg-gradient-to-r from-blue-500 to-green-500 p-6 mx-10 rounded-lg shadow-lg text-white text-center mt-20">
-        <h1 className="text-4xl font-bold mb-2">Welcome, {userName}!</h1>
+        <h1 className="text-4xl font-bold mb-2">Welcome, {name}!</h1>
         <p className="text-lg mb-4">
           Your personal health management dashboard
         </p>
@@ -68,7 +67,8 @@ const Dashboard = () => {
           altText="Rewards"
         />
       </div>
-    </div>
+      </div>
+  
   );
 };
 

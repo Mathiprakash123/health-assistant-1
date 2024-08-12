@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../Context/AuthProvider";
 
-const DoctorSignup = () => {
+const TrainerSignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +45,7 @@ const DoctorSignup = () => {
         setSignupEmailAndLogin(email); // Set signup email and login
         console.log(email);
         
-        navigate("/doctor");
+        navigate("/trainer");
       } else {
         setErrors({ general: "Registration failed. Please try again." });
       }
@@ -158,4 +158,4 @@ const DoctorSignup = () => {
   );
 };
 
-export default DoctorSignup;
+export default TrainerSignUp;

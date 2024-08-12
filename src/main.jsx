@@ -24,6 +24,11 @@ import TrainerDashboard from "./Trainer/TrainerDashboard";
 import ClientsPage from "./Trainer/ClientsPage";
 import { AuthProvider } from "./Context/AuthProvider";
 import DoctorSignUp from "./Doctor/DoctorSignUp";
+import DoctorProfile from "./Doctor/DoctorProfile";
+import DoctorLogin from "./Doctor/DoctorLogin";
+import TrainerProfile from "./Trainer/TrainerProfile";
+import TrianerLogin from "./Trainer/TrianerLogin";
+import TrainerSignUp from "./Trainer/TrainerSignUp";
 
 const router = createBrowserRouter([
   {
@@ -89,12 +94,20 @@ const router = createBrowserRouter([
         element: <DoctorSignUp />,
       },
       {
+        path: "doctorlogin",
+        element: <DoctorLogin />,
+      },
+      {
         path: "patients",
         element: <PatientsPage />,
       },
       {
         path: "bills",
         element: <DoctorPayment />,
+      },
+      {
+        path: "drprofile",
+        element: <DoctorProfile />,
       },
     ],
   },
@@ -113,6 +126,18 @@ const router = createBrowserRouter([
       {
         path: "bills",
         element: <DoctorPayment />,
+      },
+      {
+        path: "trainer_profile",
+        element: <TrainerProfile />,
+      },
+      {
+        path: "trainer_login",
+        element: <TrianerLogin />,
+      },
+      {
+        path: "trainer_signup",
+        element: <TrainerSignUp />,
       },
     ],
   },

@@ -3,25 +3,23 @@ import { useAuth } from '../Context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const ProfilePage = () => {
+const TrainerProfile = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
     firstname: '',
     age: 0,
-    height: 0,
-    weight: 0,
-    bloodGroup: '',
-    medicalConditions: [],
+    gender: '',
+    specialization: '',
+    medicalConditions: []
   });
-
-  const { isAuthenticated, logout, email } = useAuth();
-  const navigate = useNavigate();
-
-  const [isEditing, setIsEditing] = useState(false);
   const [editableProfile, setEditableProfile] = useState({ ...profile });
+  const [isEditing, setIsEditing] = useState(false);
+  const { signupEmail } = useAuth();
 
   useEffect(() => {
-    if (email) {
-      axios.get(`http://localhost:8080/profile`, { params: { email: email } })
+    if (signupEmail) {
+      axios.get('http://localhost:8080/dr_profile', { params: { email: signupEmail } })
         .then(response => {
           const data = response.data;
           setProfile({
@@ -37,7 +35,7 @@ const ProfilePage = () => {
           console.error('Error fetching profile:', error);
         });
     }
-  }, [email]);
+  }, [signupEmail]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +43,7 @@ const ProfilePage = () => {
   };
 
   const handleSave = () => {
-    axios.put('http://localhost:8080/update_user', editableProfile)
+    axios.put('http://localhost:8080/update_trainer', editableProfile)
       .then(response => {
         console.log('Profile updated successfully');
         setProfile({ ...editableProfile });
@@ -63,7 +61,7 @@ const ProfilePage = () => {
 
   const handleSignOut = () => {
     logout();
-    navigate('/');
+    navigate("/trainer/trainer_login");
   };
 
   return (
@@ -88,7 +86,7 @@ const ProfilePage = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M15.232 12.232a2 2 0 11-2.464-2.464m4.928 0a2 2 0 11-2.464 2.464M12 4v8m0 4v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17"
+                  d="M15.232 12.232a2 2 0 11-2.464-2.464m4.928 0a2 2 0 11-2.464 2.464M12 4v8m0 4v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5V17"
                 ></path>
               </svg>
             </div>
@@ -101,7 +99,7 @@ const ProfilePage = () => {
                 <label className="text-gray-600 text-sm font-medium w-1/3">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
                 {isEditing ? (
                   <input
-                    type={key === 'age' || key === 'height' || key === 'weight' ? 'number' : 'text'}
+                    type={key === 'age' ? 'number' : 'text'}
                     name={key}
                     value={editableProfile[key]}
                     onChange={handleChange}
@@ -124,50 +122,30 @@ const ProfilePage = () => {
                 rows="3"
               />
             ) : (
-              <ul className="text-gray-800 text-lg list-disc pl-5">
-                {(profile.medicalConditions || []).map((condition, index) => (
-                  <li key={index}>{condition}</li>
-                ))}
-              </ul>
+              profile.medicalConditions.length > 0 ? (
+                <ul className="list-disc pl-5 text-gray-800 text-lg">
+                  {profile.medicalConditions.map((condition, index) => (
+                    <li key={index}>{condition}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No medical conditions listed.</p>
+              )
             )}
           </div>
-          <div className="flex gap-4 mt-6">
-            {isEditing ? (
-              <>
-                <button
-                  onClick={handleSave}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={handleCancel}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
-                >
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-              >
-                Edit
-              </button>
-            )}
-          </div>
-          {isAuthenticated && (
-            <button
-              onClick={handleSignOut}
-              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-            >
-              Sign Out
-            </button>
+          {isEditing ? (
+            <div className="flex space-x-4">
+              <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Save</button>
+              <button onClick={handleCancel} className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">Cancel</button>
+            </div>
+          ) : (
+            <button onClick={() => setIsEditing(true)} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300">Edit</button>
           )}
+          <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">Sign Out</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default TrainerProfile;

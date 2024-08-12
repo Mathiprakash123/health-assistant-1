@@ -1,8 +1,7 @@
 import React from "react";
-import DoctorSidePanel from "./mainpages/DoctorSidePanel";
 import { Link } from "react-router-dom";
 
-const DoctorNavBar = ({name}) => {
+const TrainerNavBar = ({name}) => {
   return (
     <div>
       <div className="flex justify-between pt-5 shadow-black"> {/* Use shadow-md or other shadow classes */}
@@ -15,7 +14,7 @@ const DoctorNavBar = ({name}) => {
             className="px-5 py-4 rounded-md shadow-md outline-none"
             placeholder="Search"
           />
-        <Link to={'drprofile'} >  <img
+        <Link to={'trainer_profile'} >  <img
             src="https://static.vecteezy.com/system/resources/previews/001/886/209/non_2x/doctor-medical-cartoon-design-vector.jpg"
             alt="Doctor Avatar"
             className="w-16 h-16 rounded-full"
@@ -26,4 +25,4 @@ const DoctorNavBar = ({name}) => {
   );
 };
 
-export default DoctorNavBar;
+export default TrainerNavBar;

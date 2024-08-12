@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import OurServices from "../extrapages/OurServices";
 import Feedback from "../extrapages/Feedback";
+import { useAuth } from "../Context/AuthProvider";
 
 const Home = () => {
+  const {  name } = useAuth(); // Correctly use the hook and destructure name
+ 
+ 
   return (
     <div>
       <div className="mx-32 my-20 flex justify-between">
@@ -11,7 +15,7 @@ const Home = () => {
             Welcome,
           </h1>
           <h1 className="text-[#239d80] text-6xl font-extrabold font-sans leading-[5rem]	">
-            MathiPrakash !
+          {name}
           </h1>
 
           <p className="w-[730px] text-2xl font-sans mt-20 leading-10">

@@ -50,7 +50,7 @@ const PieChart = () => {
   };
 
   return (
-    <div className="max-w-[420px] ml-60 p-4 h-fit">
+    <div className="max-w-[420px]  p-4 h-fit">
       <div className="bg-gray-50  rounded-lg p-6 pl-16">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Patients Summary of June</h2>
         <div className="h-fit">

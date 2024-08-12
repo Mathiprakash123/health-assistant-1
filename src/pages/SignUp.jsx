@@ -12,7 +12,7 @@ const SignupPage = () => {
   const [weight, setWeight] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login, updateEmail } = useAuth();
+  const { login, updateEmail, updateName } = useAuth();
 
   const validateForm = () => {
     const newErrors = {};
@@ -72,8 +72,9 @@ const SignupPage = () => {
 
         if (response.status === 200) {
           console.log(response.data);
-          login(); 
-          updateEmail(email); 
+          login(); // Update with proper parameters if needed
+          updateEmail(email); // Set email in Auth context
+          updateName(name); // Set name in Auth context
           navigate("/");
         } else {
           setErrors({ general: "Registration failed. Please try again." });
@@ -241,9 +242,7 @@ const SignupPage = () => {
             >
               Sign Up
             </button>
-            
           </form>
-          
         </div>
       </div>
     </div>
