@@ -53,7 +53,7 @@ const DoctorLogin = () => {
       <div className="flex bg-white m-auto items-center p-10 w-[80%] shadow-lg rounded-lg">
         <div className="flex items-center">
           <img
-            src="src/assets/Designer.png"
+            src="https://static.vecteezy.com/system/resources/previews/016/928/593/original/making-appointment-online-flat-concept-illustration-scheduling-visit-to-doctor-editable-2d-cartoon-characters-on-white-for-web-design-creative-idea-for-website-mobile-presentation-vector.jpg"
             alt="Description of the image"
             className="max-w-[1100px] h-[600px]"
           />

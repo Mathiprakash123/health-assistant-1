@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuth } from '../Context/AuthProvider'; // Adjust import if necessary
+import { useNavigate } from 'react-router-dom';
 
 const patients = [
   {
@@ -36,16 +38,28 @@ const patients = [
     diagnosis: "Back Pain",
     time: "02:00 PM",
   },
-  
 ];
 
-const PatientList = ({name}) => {
+const PatientList = () => {
+  const { isAuthenticated } = useAuth(); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/doctor/doctorlogin'); 
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null; 
+  }
+
   return (
     <div className="bg-blue-50 px-6 py-4 w-[450px] h-fit mx-10 my-8 rounded-lg shadow-md">
       <h1 className="text-blue-600 text-xl font-semibold mb-4">Today's Appointments</h1>
       <table className="w-full max-w-[600px] border-separate border-spacing-2">
         <thead>
-          <tr className=" text-gray-800">
+          <tr className="text-gray-800">
             <th className="p-3 rounded-tl-lg">Image</th>
             <th className="p-3">Name/Diagnosis</th>
             <th className="p-3 rounded-tr-lg">Time</th>
@@ -53,7 +67,7 @@ const PatientList = ({name}) => {
         </thead>
         <tbody>
           {patients.map((patient) => (
-            <tr key={patient.id} className="">
+            <tr key={patient.id}>
               <td className="p-2">
                 <img
                   src={patient.image}

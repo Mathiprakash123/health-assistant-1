@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DoctorNavBar from "./DoctorNavBar";
+import { useAuth } from '../Context/AuthProvider'; // Adjust import if necessary
+import { useNavigate } from 'react-router-dom';
 
 const DoctorPayment = () => {
+  const { isAuthenticated } = useAuth(); // Assuming isAuthenticated is provided
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/doctor/doctorlogin'); // Redirect to login if not authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null; // Optionally return a loading indicator or nothing while checking authentication
+  }
+
   const patients = [
     {
       id: 1,
@@ -70,19 +85,19 @@ const DoctorPayment = () => {
               <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 #
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Patient's Name
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Visit Type
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Fees
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Paid Status
               </th>
             </tr>

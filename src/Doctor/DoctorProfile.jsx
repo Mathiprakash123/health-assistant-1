@@ -67,7 +67,7 @@ const DoctorProfile = () => {
 
   const handleSignOut = () => {
     logout();
-    navigate("/doctor-login");
+    navigate("/doctor/doctorlogin");
   };
 
   if (!isAuthenticated) {
