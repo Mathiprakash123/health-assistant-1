@@ -65,8 +65,8 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-200 items-center justify-center p-4  ">
-      <div className="bg-white shadow-xlrounded-lg h-[80vh]  w-fit p-8 flex flex-col md:flex-row rounded shadow-md gap-20">
+    <div className="flex min-h-screen bg-gray-50 items-center justify-center p-4  ">
+      <div className="bg-white  h-[80vh]  w-fit p-8 flex flex-col md:flex-row rounded shadow-md gap-20">
         
         {/* Image Section */}
         <div className=" mb-6 md:mb-0 flex items-center justify-center">

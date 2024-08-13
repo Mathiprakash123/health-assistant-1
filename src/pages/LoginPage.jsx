@@ -12,47 +12,50 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch("http://localhost:8080/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        const result = await response.json();
-        if (response.ok) {
-            if (result.message === "Login successful") {
-                console.log("Login successful");
-                navigate("/");
-                login(email);
-                updateEmail(email);
-                updateName(result.name || "Guest");
-            } else {
-                setErrors({ general: "Invalid email or password" });
-            }
+      const result = await response.json();
+
+      console.log("Response Status:", response.status);
+      console.log("Response Body:", result);
+
+      if (response.ok) {
+        if (result.message === "Login successful") {
+          console.log("Login successful");
+          navigate("/");
+          login(email);
+          updateEmail(email);
+          updateName(result.name || "Guest");
         } else {
-            setErrors({ general: result.message || "Something went wrong. Please try again later." });
+          setErrors({ general: "Invalid email or password" });
         }
+      } else {
+        setErrors({ general: result.message || "Something went wrong. Please try again later." });
+      }
     } catch (error) {
-        console.error("Error:", error);
-        setErrors({ general: "Something went wrong. Please try again later." });
+      console.error("Error:", error);
+      setErrors({ general: "Something went wrong. Please try again later." });
     }
-};
-
+  };
 
   return (
-    <div className="flex min-h-screen bg-gray-200 justify-center p-4">
-      <div className="bg-white shadow-xl h-[70vh] mt-32 p-8 flex flex-col md:flex-row rounded gap-20">
+    <div className="flex min-h-screen bg-gray-50 justify-center p-4">
+      <div className="bg-white shadow-md h-[70vh] mt-32 p-8 flex flex-col md:flex-row rounded gap-20">
         {/* Image Section */}
         <div className="mb-6 md:mb-0 flex items-center justify-center">
-          <img 
-            src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png" 
-            alt="Login" 
+          <img
+            src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png"
+            alt="Login"
             className="w-[700px]"
           />
         </div>
-        
+
         {/* Form Section */}
         <div className="flex flex-col items-center">
           <h1 className="text-3xl font-semibold text-gray-800 mb-6">Login</h1>
@@ -60,7 +63,7 @@ const LoginPage = () => {
           {errors.general && (
             <p className="text-red-500 text-center mb-4">{errors.general}</p>
           )}
-          
+
           <form onSubmit={handleSubmit} className="w-[400px] grid grid-cols-1 gap-6 mt-32">
             <div className="col-span-1">
               <label
@@ -115,7 +118,6 @@ const LoginPage = () => {
             </Link>
           </div>
         </div>
-        
       </div>
     </div>
   );
