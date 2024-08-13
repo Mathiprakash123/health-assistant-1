@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../Context/AuthProvider";
 
@@ -8,7 +8,6 @@ const TrainerSignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [specialization, setSpecialization] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { setSignupEmailAndLogin } = useAuth();
@@ -21,7 +20,6 @@ const TrainerSignUp = () => {
     if (!password) newErrors.password = "Password is required";
     else if (password.length < 6) newErrors.password = "Password must be at least 6 characters long";
     if (!gender) newErrors.gender = "Gender is required";
-    if (!specialization) newErrors.specialization = "Specialization is required";
     return newErrors;
   };
 
@@ -33,18 +31,15 @@ const TrainerSignUp = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/doctorregister', {
+      const response = await axios.post('http://localhost:8080/trainer_register', {
         name,
         email,
         password,
         gender,
-        specialization
       });
 
       if (response.status === 200) {
         setSignupEmailAndLogin(email); // Set signup email and login
-        console.log(email);
-        
         navigate("/trainer");
       } else {
         setErrors({ general: "Registration failed. Please try again." });
@@ -60,8 +55,8 @@ const TrainerSignUp = () => {
       <div className="flex bg-white m-auto items-center p-5 w-[80%] shadow-lg rounded-lg">
         <div className="flex items-center">
           <img
-            src="https://static.vecteezy.com/system/resources/previews/016/928/593/original/making-appointment-online-flat-concept-illustration-scheduling-visit-to-doctor-editable-2d-cartoon-characters-on-white-for-web-design-creative-idea-for-website-mobile-presentation-vector.jpg"
-            alt="Doctor Illustration"
+            src="https://img.freepik.com/premium-vector/running-african-american-man-outdoors-young-athletic-man-jogging-sportswear-with-fitness-bracelet-healthy-lifestyle-sport-concept-morning-jog-park-flat-vector-illustration_502651-583.jpg"
+            alt="Trainer Illustration"
             className="max-w-[1100px] h-[600px]"
           />
         </div>
@@ -130,20 +125,6 @@ const TrainerSignUp = () => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-
-              <div className="mb-6">
-                <label htmlFor="specialization" className={`block mb-2 text-lg ${errors.specialization ? "text-red-500" : "text-gray-700"}`}>
-                  {errors.specialization || "Specialization"}
-                </label>
-                <input
-                  type="text"
-                  id="specialization"
-                  className={`p-3 rounded-lg w-full outline-none bg-gray-100 ${errors.specialization ? "border-red-500" : "border-gray-300"}`}
-                  placeholder="Enter Specialization"
-                  value={specialization}
-                  onChange={(e) => setSpecialization(e.target.value)}
-                />
-              </div>
             </div>
             <button
               type="submit"
@@ -151,6 +132,9 @@ const TrainerSignUp = () => {
             >
               Sign Up
             </button>
+            <div className="mt-[50px] text-center">
+              <p className="text-gray-700">Already have an account? <Link to="/trainer/trainer_login" className="text-blue-600 hover:underline">Sign In</Link></p>
+            </div>
           </form>
         </div>
       </div>

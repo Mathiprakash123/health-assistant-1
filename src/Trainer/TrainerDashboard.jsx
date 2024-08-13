@@ -1,19 +1,32 @@
-import React from "react";
-import DoctorNavBar from "../Doctor/DoctorNavBar";
-import HeaderCard from "../Doctor/HeaderCard";
-import PieChart from "../Doctor/PieChart";
-import PatientList from "../Doctor/PatientList";
-import AppointmentRequest from "../Doctor/mainpages/AppointmentRequest";
+import React, { useEffect } from "react";
 import TrainerNavBar from "./TrainerNavBar";
-
+import HeaderCard from "../Doctor/HeaderCard";
+import ClientsChart from "./ClientsChart"; // Updated to ClientsChart
+import TrainerAppointment from "./TrainerAppointment"; // Updated to TrainerAppointment
+import { useAuth } from '../Context/AuthProvider'; // Adjust import if necessary
+import { useNavigate } from 'react-router-dom';
+import ClientsList from "./ClinetsList";
 
 const TrainerDashboard = () => {
+  const { isAuthenticated } = useAuth(); // Assuming isAuthenticated is provided
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/trainer/trainer_login'); // Redirect to login if not authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null; // Optionally return a loading indicator or nothing while checking authentication
+  }
+
   const now = new Date();
   const formattedDate = now.toLocaleDateString();
   const cardData = [
     {
-      name: "Total patient",
-      count: "2000+",
+      name: "Total Clients",
+      count: "1500+",
       date: formattedDate,
       svg: (
         <svg
@@ -27,8 +40,8 @@ const TrainerDashboard = () => {
       ),
     },
     {
-      name: "Today patient",
-      count: "20",
+      name: "New Clients Today",
+      count: "30",
       date: formattedDate,
       svg: (
         <svg
@@ -42,8 +55,8 @@ const TrainerDashboard = () => {
       ),
     },
     {
-      name: "Today Appointment",
-      count: "4",
+      name: "Upcoming Appointments",
+      count: "8",
       date: formattedDate,
       svg: (
         <svg
@@ -60,7 +73,7 @@ const TrainerDashboard = () => {
 
   return (
     <div className="grid grid-rows-[auto_1fr] gap-10 p-10">
-      <div >
+      <div>
         <TrainerNavBar name={"Dashboard"} />
       </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3 ml-44">
@@ -74,10 +87,10 @@ const TrainerDashboard = () => {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 ml-44 bg-gray-50 ">
-        <PieChart />
-        <PatientList name="patient" />
-        <AppointmentRequest />
+      <div className="grid grid-cols-1 md:grid-cols-3 ml-44 bg-gray-50">
+        <ClientsChart />
+        <ClientsList name="Client" />
+        <TrainerAppointment />
       </div>
     </div>
   );

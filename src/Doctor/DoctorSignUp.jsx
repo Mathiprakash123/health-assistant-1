@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../Context/AuthProvider";
 
@@ -44,7 +44,6 @@ const DoctorSignup = () => {
       if (response.status === 200) {
         setSignupEmailAndLogin(email); // Set signup email and login
         console.log(email);
-        
         navigate("/doctor");
       } else {
         setErrors({ general: "Registration failed. Please try again." });
@@ -151,6 +150,11 @@ const DoctorSignup = () => {
             >
               Sign Up
             </button>
+            <div className="mt-12 text-center">
+            <div className="mt-[50px] text-center">
+              <p className="text-gray-700">Already have an account? <Link to="/doctor/doctorlogin" className="text-blue-600 hover:underline">Sign In</Link></p>
+            </div>
+            </div>
           </form>
         </div>
       </div>

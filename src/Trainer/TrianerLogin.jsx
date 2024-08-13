@@ -2,49 +2,41 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthProvider";
 
-const TrianerLogin = () => {
+const TrainerLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login, signupEmail } = useAuth();
-  const { setSignupEmailAndLogin } = useAuth();
+  const { login, setSignupEmailAndLogin } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Submitted Email:", email);  // Log email
-    console.log("Submitted Password:", password);  // Log password
-
     try {
-      const response = await fetch("http://localhost:8080/dr_login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),  // Send the email and password
-      });
+        const response = await fetch("http://localhost:8080/trainer_login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-      console.log("Response Status:", response.status);  // Log response status
+        const result = await response.json();
 
-      if (response.ok) {
-        const result = await response.text();
-        console.log("Response Text:", result);  // Log response text
-
-        if (result === "Login successful") {
-          console.log("Login successful");
-          navigate("/doctor");
-          setSignupEmailAndLogin(email); // Set signup email and login
-          console.log(email);
-          login(); 
+        if (response.ok) {
+            if (result.message === "Login successful") {
+                navigate("/trainer");
+                setSignupEmailAndLogin(email); 
+                login();
+            } else {
+                setErrors({ general: result.message });
+            }
         } else {
-          setErrors({ general: "Invalid email or password" });
+            setErrors({ general: result.message || "Something went wrong. Please try again later." });
         }
-      } else {
-        setErrors({ general: "Something went wrong. Please try again later." });
-      }
     } catch (error) {
-      console.error("Error:", error);
-      setErrors({ general: "Something went wrong. Please try again later." });
+        console.error("Error:", error);
+        setErrors({ general: "Something went wrong. Please try again later." });
     }
   };
 
@@ -53,7 +45,7 @@ const TrianerLogin = () => {
       <div className="flex bg-white m-auto items-center p-10 w-[80%] shadow-lg rounded-lg">
         <div className="flex items-center">
           <img
-            src="src/assets/Designer.png"
+            src="https://img.freepik.com/premium-vector/running-african-american-man-outdoors-young-athletic-man-jogging-sportswear-with-fitness-bracelet-healthy-lifestyle-sport-concept-morning-jog-park-flat-vector-illustration_502651-583.jpg"
             alt="Description of the image"
             className="max-w-[1100px] h-[600px]"
           />
@@ -121,6 +113,9 @@ const TrianerLogin = () => {
             >
               Sign In
             </button>
+            <div className="mt-[50px] text-center">
+              <p className="text-gray-700">Don't have an account? <a href="/trainer/trainer_signup" className="text-blue-600 hover:underline">Sign Up</a></p>
+            </div>
           </form>
         </div>
       </div>
@@ -128,4 +123,4 @@ const TrianerLogin = () => {
   );
 };
 
-export default TrianerLogin;
+export default TrainerLogin;

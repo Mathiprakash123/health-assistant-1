@@ -29,6 +29,7 @@ import DoctorLogin from "./Doctor/DoctorLogin";
 import TrainerProfile from "./Trainer/TrainerProfile";
 import TrianerLogin from "./Trainer/TrianerLogin";
 import TrainerSignUp from "./Trainer/TrainerSignUp";
+import TrainerPayment from "./Trainer/TrainerPayment";
 
 const router = createBrowserRouter([
   {
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
       {
         path: "trainer_signup",
         element: <TrainerSignUp />,
+      },
+      {
+        path: "trainer_payment",
+        element: <TrainerPayment />,
       },
     ],
   },

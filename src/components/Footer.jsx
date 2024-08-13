@@ -11,7 +11,8 @@ const Footer = () => {
           <Link to={'/nutrition'} className="text-blue-400 hover:text-blue-500 mx-2">Calorie Calculator</Link>
           <Link to={'/fitness'} className="text-blue-400 hover:text-blue-500 mx-2">Fitness</Link>
           <Link to={'/medical'} className="text-blue-400 hover:text-blue-500 mx-2">Health Assistant</Link>
-          <Link to={'doctorregiser'} className="text-blue-400 hover:text-blue-500 mx-2">Doctor Sign Up</Link>
+          <Link to={'doctor/doctorregiser'} className="text-blue-400 hover:text-blue-500 mx-2">Doctor Sign Up</Link>
+          <Link to={'trainer/trainer_signup'} className="text-blue-400 hover:text-blue-500 mx-2">Trainer Sign Up</Link>
 
 
         </div>

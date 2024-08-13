@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthProvider";
 
 const LoginPage = () => {
@@ -12,109 +12,110 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        const response = await fetch("http://localhost:8080/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-      if (response.ok) {
-        const result = await response.json(); // Assuming response is JSON
-        if (result.message === "Login successful") {
-          console.log("Login successful");
-          navigate("/");
-          login(email);
-          updateEmail(email);
-          updateName(result.name || "Guest"); // Update name based on response
+        const result = await response.json();
+        if (response.ok) {
+            if (result.message === "Login successful") {
+                console.log("Login successful");
+                navigate("/");
+                login(email);
+                updateEmail(email);
+                updateName(result.name || "Guest");
+            } else {
+                setErrors({ general: "Invalid email or password" });
+            }
         } else {
-          setErrors({ general: "Invalid email or password" });
+            setErrors({ general: result.message || "Something went wrong. Please try again later." });
         }
-      } else {
-        setErrors({ general: "Something went wrong. Please try again later." });
-      }
     } catch (error) {
-      console.error("Error:", error);
-      setErrors({ general: "Something went wrong. Please try again later." });
+        console.error("Error:", error);
+        setErrors({ general: "Something went wrong. Please try again later." });
     }
-  };
+};
+
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <div className="flex bg-white m-auto items-center p-10 w-[80%] shadow-lg rounded-lg">
-        <div className="flex items-center">
-          <img
-            src="src/assets/Designer.png"
-            alt="Description of the image"
-            className="max-w-[1100px] h-[600px]"
+    <div className="flex min-h-screen bg-gray-200 justify-center p-4">
+      <div className="bg-white shadow-xl h-[70vh] mt-32 p-8 flex flex-col md:flex-row rounded gap-20">
+        {/* Image Section */}
+        <div className="mb-6 md:mb-0 flex items-center justify-center">
+          <img 
+            src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png" 
+            alt="Login" 
+            className="w-[700px]"
           />
         </div>
-        <div className="flex flex-1 items-center justify-center">
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-lg w-full max-w-md p-8 space-y-10"
-          >
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-black">Login</h1>
-            </div>
+        
+        {/* Form Section */}
+        <div className="flex flex-col items-center">
+          <h1 className="text-3xl font-semibold text-gray-800 mb-6">Login</h1>
 
-            {errors.general && (
-              <div className="mb-4 text-red-500 text-center">
-                {errors.general}
-              </div>
-            )}
-
-            <div className="mb-6">
+          {errors.general && (
+            <p className="text-red-500 text-center mb-4">{errors.general}</p>
+          )}
+          
+          <form onSubmit={handleSubmit} className="w-[400px] grid grid-cols-1 gap-6 mt-32">
+            <div className="col-span-1">
               <label
                 htmlFor="email"
-                className={`block mb-2 text-lg ${
-                  errors.email ? "text-red-500" : "text-gray-700"
-                }`}
+                className={`block mb-2 text-lg ${errors.email ? "text-red-500" : "text-gray-700"}`}
               >
                 {errors.email || "Email"}
               </label>
               <input
-                type="text"
+                type="email"
                 id="email"
-                className={` ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                } p-3 rounded-lg w-full outline-none bg-gray-100`}
+                className={`border ${errors.email ? "border-red-500" : "border-gray-300"} p-3 rounded-lg w-full bg-gray-100`}
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
-            <div className="mb-6">
+            <div className="col-span-1">
               <label
                 htmlFor="password"
-                className={`block mb-2 text-lg ${
-                  errors.password ? "text-red-500" : "text-gray-700"
-                }`}
+                className={`block mb-2 text-lg ${errors.password ? "text-red-500" : "text-gray-700"}`}
               >
                 {errors.password || "Password"}
               </label>
               <input
                 type="password"
                 id="password"
-                className={` ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                } p-3 rounded-lg w-full outline-none bg-gray-100`}
+                className={`border ${errors.password ? "border-red-500" : "border-gray-300"} p-3 rounded-lg w-full bg-gray-100`}
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
-            >
-              Sign In
-            </button>
+            <div className="col-span-1">
+              <button
+                type="submit"
+                className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+              >
+                Sign In
+              </button>
+            </div>
           </form>
+
+          <div className="mt-6 text-center text-blue-600">
+            <Link to={"/doctor/doctorlogin"} className="block hover:underline mb-2">
+              Log In As Doctor
+            </Link>
+            <Link to={"/trainer/trainer_login"} className="block hover:underline">
+              Log In As Trainer
+            </Link>
+          </div>
         </div>
+        
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthProvider";
 
 const DoctorLogin = () => {
@@ -7,44 +7,60 @@ const DoctorLogin = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login, signupEmail } = useAuth();
-  const { setSignupEmailAndLogin } = useAuth();
+  const { login, setSignupEmailAndLogin } = useAuth();
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email address is invalid";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      try {
+        const response = await fetch("http://localhost:8080/doctor_login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-    console.log("Submitted Email:", email);  // Log email
-    console.log("Submitted Password:", password);  // Log password
-
-    try {
-      const response = await fetch("http://localhost:8080/dr_login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),  // Send the email and password
-      });
-
-      console.log("Response Status:", response.status);  // Log response status
-
-      if (response.ok) {
-        const result = await response.text();
-        console.log("Response Text:", result);  // Log response text
-
-        if (result === "Login successful") {
-          console.log("Login successful");
-          navigate("/doctor");
-          setSignupEmailAndLogin(email); // Set signup email and login
-          console.log(email);
-          login(); 
-        } else {
+        if (response.ok) {
+          const result = await response.json();
+          if (result.message === "Login successful") {
+            console.log("Login successful");
+            navigate("/doctor");
+            setSignupEmailAndLogin(email);
+            login();
+          } else {
+            setErrors({ general: result.message });
+          }
+        } else if (response.status === 401) {
           setErrors({ general: "Invalid email or password" });
+        } else {
+          setErrors({ general: "Something went wrong. Please try again later." });
         }
-      } else {
+      } catch (error) {
+        console.error("Error:", error);
         setErrors({ general: "Something went wrong. Please try again later." });
       }
-    } catch (error) {
-      console.error("Error:", error);
-      setErrors({ general: "Something went wrong. Please try again later." });
     }
   };
 
@@ -54,7 +70,7 @@ const DoctorLogin = () => {
         <div className="flex items-center">
           <img
             src="https://static.vecteezy.com/system/resources/previews/016/928/593/original/making-appointment-online-flat-concept-illustration-scheduling-visit-to-doctor-editable-2d-cartoon-characters-on-white-for-web-design-creative-idea-for-website-mobile-presentation-vector.jpg"
-            alt="Description of the image"
+            alt="Doctor"
             className="max-w-[1100px] h-[600px]"
           />
         </div>
@@ -83,9 +99,9 @@ const DoctorLogin = () => {
                 {errors.email || "Email"}
               </label>
               <input
-                type="text"
+                type="email"
                 id="email"
-                className={` ${
+                className={`${
                   errors.email ? "border-red-500" : "border-gray-300"
                 } p-3 rounded-lg w-full outline-none bg-gray-100`}
                 placeholder="Enter Email"
@@ -106,7 +122,7 @@ const DoctorLogin = () => {
               <input
                 type="password"
                 id="password"
-                className={` ${
+                className={`${
                   errors.password ? "border-red-500" : "border-gray-300"
                 } p-3 rounded-lg w-full outline-none bg-gray-100`}
                 placeholder="Enter Password"
@@ -121,6 +137,12 @@ const DoctorLogin = () => {
             >
               Sign In
             </button>
+
+            <div className="mt-12 text-center">
+            <div className="mt-[50px] text-center">
+              <p className="text-gray-700">Don't have an account?<Link to="/doctor/doctorregiser" className="text-blue-600 hover:underline">Sign Up</Link></p>
+            </div>
+            </div>
           </form>
         </div>
       </div>

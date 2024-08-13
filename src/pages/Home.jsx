@@ -41,7 +41,7 @@ const Home = () => {
         <h1 className="text-[#239d80] text-6xl mx-32 font-semibold font-sans">
           World Class Service
         </h1>
-        <img src="src/assets/blob.png" alt=""className="mx-20 mt-32" />
+        <img src="src/assets/blob.png" alt=""className="ml-20 mt-32 w-[1700px]" />
       </div>
       <div>
       <OurServices/>

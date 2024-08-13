@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const TrainerProfile = () => {
-  const { logout } = useAuth();
+  const { logout, isAuthenticated, signupEmail } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     firstname: '',
@@ -15,11 +15,15 @@ const TrainerProfile = () => {
   });
   const [editableProfile, setEditableProfile] = useState({ ...profile });
   const [isEditing, setIsEditing] = useState(false);
-  const { signupEmail } = useAuth();
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/trainer/trainer_login'); // Redirect if not authenticated
+      return;
+    }
+
     if (signupEmail) {
-      axios.get('http://localhost:8080/dr_profile', { params: { email: signupEmail } })
+      axios.get('http://localhost:8080/trainer_profile', { params: { email: signupEmail } })
         .then(response => {
           const data = response.data;
           setProfile({
@@ -35,7 +39,7 @@ const TrainerProfile = () => {
           console.error('Error fetching profile:', error);
         });
     }
-  }, [signupEmail]);
+  }, [isAuthenticated, signupEmail, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +67,10 @@ const TrainerProfile = () => {
     logout();
     navigate("/trainer/trainer_login");
   };
+
+  if (!isAuthenticated) {
+    return null; // Optionally return a loading indicator or nothing while checking authentication
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
