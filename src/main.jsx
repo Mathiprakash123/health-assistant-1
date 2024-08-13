@@ -30,6 +30,7 @@ import TrainerProfile from "./Trainer/TrainerProfile";
 import TrianerLogin from "./Trainer/TrianerLogin";
 import TrainerSignUp from "./Trainer/TrainerSignUp";
 import TrainerPayment from "./Trainer/TrainerPayment";
+import AppointmentPage from "./pages/AppointmentPage";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "appointmentof",
+        element: <AppointmentPage />,
       },
       {
         path: "dashboard",

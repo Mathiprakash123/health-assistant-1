@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../Context/AuthProvider"; // Ensure the path is correct
 
@@ -55,17 +55,14 @@ const Healthcare = () => {
   }, [isAuthenticated, navigate, email]);
 
   if (loading) {
-    return <p>Loading...</p>; // Show loading message while fetching data
+    return <p>Loading...</p>; 
   }
 
   const handleCallDoctor = (doctor) => {
     alert(`Calling Dr. ${doctor.name} at ${doctor.contact}`);
   };
 
-  const handleBookAppointment = (doctor) => {
-    alert(`Booking appointment with Dr. ${doctor.name}`);
-  };
-
+ 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-4xl rounded-lg p-8 bg-white shadow-lg">
@@ -90,9 +87,7 @@ const Healthcare = () => {
               <p className="bg-white p-4 rounded-lg shadow-md">
                 <strong>Weight:</strong> {user.weight} kg
               </p>
-              {/* <p className="bg-white p-4 rounded-lg shadow-md">
-                <strong>Medical Illness:</strong> {user.medicalIllness}
-              </p> */}
+             
             </div>
           ) : (
             <p className="text-center">User profile not available.</p>
@@ -128,10 +123,10 @@ const Healthcare = () => {
                       Call
                     </button>
                     <button
-                      onClick={() => handleBookAppointment(doctor)}
+                      
                       className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md transition duration-300"
                     >
-                      Book Appointment
+                      <Link to={'/appointmentof'}>Book Appointment</Link>
                     </button>
                   </div>
                 </div>

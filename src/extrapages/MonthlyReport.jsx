@@ -28,7 +28,7 @@ const MonthlyReport = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold mb-4">Monthly Step Count Report</h2>
+        <h2 className="text-2xl font-semibold mb-4">Monthly Report</h2>
         <div className="mb-6">
           <Line data={data} options={options} />
         </div>
@@ -36,7 +36,7 @@ const MonthlyReport = () => {
           {data.labels.map((label, index) => (
             <div key={index} className="p-4 bg-gray-200 rounded-lg">
               <h3 className="text-xl font-semibold">{label}</h3>
-              <p>Steps: {data.datasets[0].data[index]}</p>
+              <p>steps: {data.datasets[0].data[index]}</p>
             </div>
           ))}
         </div>
