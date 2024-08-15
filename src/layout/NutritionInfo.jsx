@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 
 const NutritionInfo = () => {
   const [data, setData] = useState(null);
-  const [foodQuery, setFoodQuery] = useState("apple"); // Default food item to get multiple results
-  const apiKey = "0e390eb319b5d685040ae198e372f74d"; // Your Nutritionix API key
-  const appId = "935b44ee"; // Your Nutritionix App ID
-
+  const [foodQuery, setFoodQuery] = useState("apple"); 
+  const apiKey = "0e390eb319b5d685040ae198e372f74d"; 
+  const appId = "935b44ee"; 
   useEffect(() => {
     fetchNutritionData(foodQuery);
   }, [foodQuery]);
@@ -25,15 +24,14 @@ const NutritionInfo = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Nutritional Information:", data);
-        // Ensure at least 12 items are displayed
+
         const items = data.foods || [];
         if (items.length < 12) {
-          // Optionally handle less than 12 items, e.g., by using placeholders or fetching more data
           console.warn(
             "Less than 12 results found. Displaying available results."
           );
         }
-        setData({ foods: items.slice(0, 12) }); // Slice to ensure max 12 items
+        setData({ foods: items.slice(0, 12) }); 
       })
       .catch((error) => console.error("Error:", error));
   };

@@ -74,7 +74,7 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "appointmentof",
+        path: "appointmentof/:doctorId",
         element: <AppointmentPage />,
       },
       {

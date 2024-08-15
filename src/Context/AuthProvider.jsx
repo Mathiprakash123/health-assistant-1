@@ -7,11 +7,13 @@ export const AuthProvider = ({ children }) => {
   const [email, setEmail] = useState(null);
   const [signupEmail, setSignupEmail] = useState(null);
   const [name, setName] = useState("Guest"); // Default name
+  const [doctorId, setDoctorId] = useState(null); // Add doctorId
 
   const logout = () => {
     setIsAuthenticated(false);
     setEmail(null);
     setSignupEmail(null); 
+    setDoctorId(null); // Clear doctorId on logout
   };
 
   const updateName = (newName) => {
@@ -30,8 +32,13 @@ export const AuthProvider = ({ children }) => {
     login(userEmail);
   };
 
+  const setDoctorIdAndLogin = (id) => {
+    setDoctorId(id);
+    login(email); // Optional: You might want to call login here or separately
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, email, updateEmail, signupEmail, setSignupEmailAndLogin, name, updateName }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, email, updateEmail, signupEmail, setSignupEmailAndLogin, name, updateName, doctorId, setDoctorIdAndLogin }}>
       {children}
     </AuthContext.Provider>
   );

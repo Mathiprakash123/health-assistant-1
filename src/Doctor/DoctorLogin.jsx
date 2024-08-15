@@ -7,7 +7,7 @@ const DoctorLogin = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login, setSignupEmailAndLogin } = useAuth();
+  const { setSignupEmailAndLogin, setDoctorIdAndLogin } = useAuth();
 
   const validateForm = () => {
     const newErrors = {};
@@ -46,9 +46,17 @@ const DoctorLogin = () => {
           const result = await response.json();
           if (result.message === "Login successful") {
             console.log("Login successful");
-            navigate("/doctor");
+
+            // Retrieve and log doctorId
+            const doctorId = result.doctorId; // Changed to doctorId based on your updated response
+            console.log(doctorId);
+            
+
+            // Update context with email and doctorId
             setSignupEmailAndLogin(email);
-            login();
+            setDoctorIdAndLogin(doctorId);
+
+            navigate("/doctor");
           } else {
             setErrors({ general: result.message });
           }
@@ -139,9 +147,12 @@ const DoctorLogin = () => {
             </button>
 
             <div className="mt-12 text-center">
-            <div className="mt-[50px] text-center">
-              <p className="text-gray-700">Don't have an account?<Link to="/doctor/doctorregiser" className="text-blue-600 hover:underline">Sign Up</Link></p>
-            </div>
+              <p className="text-gray-700">
+                Don't have an account?
+                <Link to="/doctor/doctorregister" className="text-blue-600 hover:underline">
+                  Sign Up
+                </Link>
+              </p>
             </div>
           </form>
         </div>

@@ -29,25 +29,19 @@ const clients = [
     goal: "Strength Gain",
     time: "06:00 PM",
   },
-  {
-    id: 5,
-    image: "https://i.pinimg.com/736x/7c/2e/3f/7c2e3ff166258350a787509ad23aca3d.jpg",
-    name: "Kakashi",
-    goal: "Weight Loss",
-    time: "07:00 PM",
-  },
+  
 ];
 
 const TrainerAppointment = () => {
   const [clientsStatus, setClientsStatus] = useState({});
 
   const handleResponse = (id, response) => {
-    alert(`Session ${response} for client with ID ${id}`);
+    // alert(`Session ${response} for client with ID ${id}`);
     setClientsStatus((prev) => ({ ...prev, [id]: response }));
   };
 
   return (
-    <div className="bg-blue-50 px-5 py-4 w-fit h-fit mx-10 my-8 rounded-lg shadow-md">
+    <div className="bg-blue-50 px-5 py-4 w-[450px] h-[540px] mx-10 my-8 rounded-lg shadow-md">
       <h1 className="text-blue-600 text-xl font-semibold mb-4">Client Sessions</h1>
       <table className="w-full max-w-[600px] border-separate border-spacing-2">
         <thead>
@@ -80,21 +74,21 @@ const TrainerAppointment = () => {
                       onClick={() => handleResponse(client.id, 'Completed')}
                       className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
                     >
-                      Completed
+                      Yes
                     </button>
                     <button
                       onClick={() => handleResponse(client.id, 'Missed')}
                       className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
                     >
-                      Missed
+                      No
                     </button>
                   </>
                 )}
                 {clientsStatus[client.id] === 'Completed' && (
-                  <span className="text-green-600 font-semibold">Completed</span>
+                  <span className="text-green-600 font-semibold">Yes</span>
                 )}
                 {clientsStatus[client.id] === 'Missed' && (
-                  <span className="text-red-600 font-semibold">Missed</span>
+                  <span className="text-red-600 font-semibold">No</span>
                 )}
               </td>
             </tr>
