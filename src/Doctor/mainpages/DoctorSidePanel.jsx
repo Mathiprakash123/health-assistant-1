@@ -3,10 +3,10 @@ import Image from "../../assets/logo-no-background.png";
 import { Link } from "react-router-dom";
 const DoctorSidePanel = () => {
   return (
-    <div className=" h-full w-[200px] fixed shadow-xl bg-white">
-      <img src={Image} alt="" className=" w-32 mx-10 my-10" />
+    <div className=" h-[100vh] w-[150px] fixed shadow-xl bg-white">
+      <img src={Image} alt="" className=" w-28 mx-4 my-10" />
       <div>
-        <Link to={""}>
+        <Link to={"/doctor/"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -19,7 +19,7 @@ const DoctorSidePanel = () => {
         </Link>
       </div>  
       <div>
-        <Link to={"patients"}>
+        <Link to={"/doctor/patients"}>
           {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ const DoctorSidePanel = () => {
         </Link>
       </div>
       <div>
-        <Link to={"bills"}>
+        <Link to={"/doctor/bills"}>
           {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"

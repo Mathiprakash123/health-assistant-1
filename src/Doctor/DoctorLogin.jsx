@@ -48,9 +48,8 @@ const DoctorLogin = () => {
             console.log("Login successful");
 
             // Retrieve and log doctorId
-            const doctorId = result.doctorId; // Changed to doctorId based on your updated response
-            console.log(doctorId);
-            
+            const doctorId = result.doctorId;
+            console.log("Doctor ID:", doctorId);
 
             // Update context with email and doctorId
             setSignupEmailAndLogin(email);

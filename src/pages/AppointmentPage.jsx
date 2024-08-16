@@ -46,69 +46,6 @@ const AppointmentPage = () => {
     fetchUserDetails();
   }, [doctorId, email, navigate]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!date || !time) {
-  //     setError('Please select both date and time.');
-  //     return;
-  //   }
-
-  //   if (!user || !doctorId) {
-  //     setError('User or Doctor details are not available.');
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch('http://localhost:8080/api/appointment/post', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         userId: user.id,
-  //         doctorId: Number(doctorId), // Ensure doctorId is passed as a number
-  //         date: date,
-  //         time: time,
-  //       }),
-  //     });
-
-  //     const contentType = response.headers.get('Content-Type');
-  //     console.log('Response Content-Type:', contentType);
-
-  //     let result;
-  //     if (contentType && contentType.includes('application/json')) {
-  //       result = await response.json();
-  //       console.log('JSON response:', result);
-
-  //       if (response.ok) {
-  //         setSuccess(result.message || 'Appointment submitted successfully!');
-  //         setError('');
-  //         setDate('');
-  //         setTime('');
-  //       } else {
-  //         setSuccess('');
-  //         setError(result.message || 'Something went wrong. Please try again.');
-  //       }
-  //     } else if (contentType && contentType.includes('text/plain')) {
-  //       const text = await response.text();
-  //       console.log('Plain text response:', text);
-  //       setSuccess(text);
-  //       setError('');
-  //       setDate('');
-  //       setTime('');
-  //     } else {
-  //       const text = await response.text();
-  //       console.log('Unexpected response:', text);
-  //       setSuccess('');
-  //       setError('Unexpected response format: ' + text);
-  //     }
-  //   } catch (err) {
-  //     setSuccess('');
-  //     setError('An error occurred while submitting the appointment.');
-  //     console.error('Error:', err);
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -122,6 +59,8 @@ const AppointmentPage = () => {
       return;
     }
   
+    console.log('Submitting Date:', date); // Log the date format here
+  
     try {
       const response = await fetch('http://localhost:8080/api/appointment/post', {
         method: 'POST',
@@ -130,47 +69,30 @@ const AppointmentPage = () => {
         },
         body: JSON.stringify({
           userId: user.id,
-          doctorId: Number(doctorId), // Ensure doctorId is passed as a number
-          dateTime: `${date}T${time}`, // Combine date and time into a single string
+          doctorId: Number(doctorId),
+          date: date, // Should be in 'yyyy-MM-dd' format
+          time: time, // Format as 'HH:mm'
         }),
       });
   
-      const contentType = response.headers.get('Content-Type');
-      console.log('Response Content-Type:', contentType);
-  
-      let result;
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json();
-        console.log('JSON response:', result);
-  
-        if (response.ok) {
-          setSuccess(result.message || 'Appointment submitted successfully!');
-          setError('');
-          setDate('');
-          setTime('');
-        } else {
-          setSuccess('');
-          setError(result.message || 'Something went wrong. Please try again.');
-        }
-      } else if (contentType && contentType.includes('text/plain')) {
-        const text = await response.text();
-        console.log('Plain text response:', text);
-        setSuccess(text);
-        setError('');
-        setDate('');
-        setTime('');
-      } else {
-        const text = await response.text();
-        console.log('Unexpected response:', text);
-        setSuccess('');
-        setError('Unexpected response format: ' + text);
+      if (!response.ok) {
+        const errorResponse = await response.text(); // Or `response.json()` if the response is JSON
+        console.error('Server Error:', errorResponse);
+        setError('Failed to submit the appointment.');
+        return;
       }
+  
+      const result = await response.json();
+      setSuccess(result.message || 'Appointment submitted successfully!');
+      setError('');
+      setDate('');
+      setTime('');
     } catch (err) {
-      setSuccess('');
+      console.error('Network Error:', err);
       setError('An error occurred while submitting the appointment.');
-      console.error('Error:', err);
     }
   };
+  
   
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">

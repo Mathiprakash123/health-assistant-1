@@ -6,20 +6,17 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState(null);
   const [signupEmail, setSignupEmail] = useState(null);
-  const [name, setName] = useState("Guest"); // Default name
-  const [doctorId, setDoctorId] = useState(null); // Add doctorId
+  const [name, setName] = useState("Guest");
+  const [doctorId, setDoctorId] = useState(null);
 
   const logout = () => {
     setIsAuthenticated(false);
     setEmail(null);
-    setSignupEmail(null); 
-    setDoctorId(null); // Clear doctorId on logout
+    setSignupEmail(null);
+    setDoctorId(null);
   };
 
-  const updateName = (newName) => {
-    setName(newName); 
-  };
-
+  const updateName = (newName) => setName(newName);
   const updateEmail = (email) => setEmail(email);
 
   const login = (userEmail) => {
@@ -28,13 +25,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const setSignupEmailAndLogin = (userEmail) => {
-    setSignupEmail(userEmail); 
+    setSignupEmail(userEmail);
     login(userEmail);
   };
 
   const setDoctorIdAndLogin = (id) => {
     setDoctorId(id);
-    login(email); // Optional: You might want to call login here or separately
+    login(email); // Optional: Update login state with current email
   };
 
   return (
