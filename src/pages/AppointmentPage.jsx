@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../Context/AuthProvider';
 
@@ -23,45 +23,44 @@ const AppointmentPage = () => {
     const fetchDoctor = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/view_dr_byid/${doctorId}`);
-        console.log('Doctor data:', response.data); // Log the doctor data
         setDoctor(response.data);
+        console.log('Fetched Doctor ID:', doctorId);
       } catch (err) {
-        console.error('Error fetching doctor information:', err);
         setError('Failed to fetch doctor information.');
       }
     };
 
-    const fetchUserDetails = async () => {
+    const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/profile`, { params: { email: email } });
-        console.log('User data:', response.data); // Log the user data
-        setUser(response.data);
+        const userResponse = await axios.get(`http://localhost:8080/profile`, { params: { email: email } });
+        setUser(userResponse.data);
+        console.log('Fetched User ID:', userResponse.data.id);
       } catch (err) {
-        console.error('Error fetching user details:', err);
-        setError('Failed to fetch user details.');
+        setError('Failed to fetch user information.');
       }
     };
 
     fetchDoctor();
-    fetchUserDetails();
+    fetchUser();
   }, [doctorId, email, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!date || !time) {
       setError('Please select both date and time.');
       return;
     }
-  
+
     if (!user || !doctorId) {
       setError('User or Doctor details are not available.');
       return;
     }
-  
-    console.log('Submitting Date:', date); // Log the date format here
-  
+
     try {
+      console.log('Submitting Appointment with Doctor ID:', doctorId);
+      console.log('Submitting Appointment with User ID:', user.id);
+
       const response = await fetch('http://localhost:8080/api/appointment/post', {
         method: 'POST',
         headers: {
@@ -70,30 +69,35 @@ const AppointmentPage = () => {
         body: JSON.stringify({
           userId: user.id,
           doctorId: Number(doctorId),
-          date: date, // Should be in 'yyyy-MM-dd' format
-          time: time, // Format as 'HH:mm'
+          date: date,
+          time: time,
         }),
       });
-  
+
       if (!response.ok) {
-        const errorResponse = await response.text(); // Or `response.json()` if the response is JSON
-        console.error('Server Error:', errorResponse);
+        const errorResponse = await response.text();
         setError('Failed to submit the appointment.');
         return;
       }
-  
+
       const result = await response.json();
       setSuccess(result.message || 'Appointment submitted successfully!');
       setError('');
+
+      if (result.appointmentId) {
+        console.log('Appointment ID:', result.appointmentId); // Log Appointment ID
+        navigate('/show_appointment', {
+          state: { doctorId: doctorId, userId: user.id }
+        });
+      }
+
       setDate('');
       setTime('');
     } catch (err) {
-      console.error('Network Error:', err);
       setError('An error occurred while submitting the appointment.');
     }
   };
-  
-  
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -143,6 +147,7 @@ const AppointmentPage = () => {
               >
                 Submit Appointment
               </button>
+              <Link to={'/show_appointment'}>Show Appointment</Link>
             </form>
           </div>
         ) : (

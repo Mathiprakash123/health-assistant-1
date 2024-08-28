@@ -31,6 +31,8 @@ import TrianerLogin from "./Trainer/TrianerLogin";
 import TrainerSignUp from "./Trainer/TrainerSignUp";
 import TrainerPayment from "./Trainer/TrainerPayment";
 import AppointmentPage from "./pages/AppointmentPage";
+import NutritionInfo from "./layout/NutritionInfo";
+import ShowAppointment from "./pages/ShowAppointment";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "nutrition",
         element: <Nutrition />,
+      },
+      {
+        path: "show_appointment",
+        element: <ShowAppointment />,
       },
       {
         path: "fitness",
@@ -68,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "report",
         element: <MonthlyReport />,
+      },
+      {
+        path: "nutrition",
+        element: <NutritionInfo />,
       },
       {
         path: "profile",

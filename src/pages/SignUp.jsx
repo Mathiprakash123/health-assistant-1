@@ -49,7 +49,6 @@ const SignupPage = () => {
         });
 
         if (response.status === 200) {
-          console.log(response.data);
           login(); // Update with proper parameters if needed
           updateEmail(email); // Set email in Auth context
           updateName(name); // Set name in Auth context
@@ -58,35 +57,31 @@ const SignupPage = () => {
           setErrors({ general: "Registration failed. Please try again." });
         }
       } catch (error) {
-        console.error("There was an error registering the user!", error);
         setErrors({ general: "Registration failed. Please try again." });
       }
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 items-center justify-center p-4  ">
-      <div className="bg-white  h-[80vh]  w-fit p-8 flex flex-col md:flex-row rounded shadow-md gap-20">
-        
-        {/* Image Section */}
-        <div className=" mb-6 md:mb-0 flex items-center justify-center">
-          <img 
-            src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png" 
-            alt="Signup" 
-            className=" w-[800px]"
-          />
-        </div>
-        
-        {/* Form Section */}
-        <div className=" flex flex-col items-center">
-          <h1 className="text-3xl font-semibold text-gray-800 mb-6">Sign Up</h1>
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 items-center justify-center p-4">
+      <div className="hidden md:flex md:flex-1 md:items-center md:justify-center">
+        <img 
+          src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png" 
+          alt="Signup" 
+          className="w-full max-w-lg"
+        />
+      </div>
+
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md p-8 rounded-lg w-full max-w-md">
+          <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 text-center">Sign Up</h1>
 
           {errors.general && (
             <p className="text-red-500 text-center mb-4">{errors.general}</p>
           )}
           
-          <form onSubmit={handleSubmit} className="w-full grid grid-cols-1 gap-6 mt-32">
-            <div className="col-span-1">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
               <label
                 htmlFor="name"
                 className={`block mb-2 text-lg ${errors.name ? "text-red-500" : "text-gray-700"}`}
@@ -103,7 +98,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
+            <div>
               <label
                 htmlFor="email"
                 className={`block mb-2 text-lg ${errors.email ? "text-red-500" : "text-gray-700"}`}
@@ -120,7 +115,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
+            <div>
               <label
                 htmlFor="password"
                 className={`block mb-2 text-lg ${errors.password ? "text-red-500" : "text-gray-700"}`}
@@ -137,7 +132,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
+            <div>
               <label
                 htmlFor="age"
                 className={`block mb-2 text-lg ${errors.age ? "text-red-500" : "text-gray-700"}`}
@@ -154,7 +149,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
+            <div>
               <label
                 htmlFor="height"
                 className={`block mb-2 text-lg ${errors.height ? "text-red-500" : "text-gray-700"}`}
@@ -171,7 +166,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
+            <div>
               <label
                 htmlFor="weight"
                 className={`block mb-2 text-lg ${errors.weight ? "text-red-500" : "text-gray-700"}`}
@@ -188,26 +183,23 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="col-span-2">
-              <button
-                type="submit"
-                className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
-              >
-                Sign Up
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+            >
+              Sign Up
+            </button>
           </form>
 
           <div className="mt-6 text-center text-blue-600">
-            <Link to={'/doctor/doctorregister'} className="block hover:underline mb-2">
+            <Link to={"/doctor/doctorregister"} className="block hover:underline mb-2">
               Sign Up As Doctor
             </Link>
-            <Link to={'/trainer/trainer_signup'} className="block hover:underline">
+            <Link to={"/trainer/trainer_signup"} className="block hover:underline">
               Sign Up As Trainer
             </Link>
           </div>
         </div>
-        
       </div>
     </div>
   );

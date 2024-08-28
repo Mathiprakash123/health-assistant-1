@@ -1,127 +1,85 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 
 const NutritionInfo = () => {
-  const [data, setData] = useState(null);
-  const [foodQuery, setFoodQuery] = useState("apple"); 
-  const apiKey = "0e390eb319b5d685040ae198e372f74d"; 
-  const appId = "935b44ee"; 
+  const [foodData, setFoodData] = useState([]);
+  const [expandedIndex, setExpandedIndex] = useState(null);
   useEffect(() => {
-    fetchNutritionData(foodQuery);
-  }, [foodQuery]);
-
-  const fetchNutritionData = (query) => {
-    fetch(`https://trackapi.nutritionix.com/v2/natural/nutrients`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-app-id": appId,
-        "x-app-key": apiKey,
-      },
-      body: JSON.stringify({
-        query: query,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Nutritional Information:", data);
-
-        const items = data.foods || [];
-        if (items.length < 12) {
-          console.warn(
-            "Less than 12 results found. Displaying available results."
-          );
+    axios.get('http://localhost:8080/api/foods/view_all_food')
+      .then(response => {
+        if (Array.isArray(response.data)) {
+          setFoodData(response.data);
+        } else {
+          console.error('Unexpected data format:', response.data);
         }
-        setData({ foods: items.slice(0, 12) }); 
       })
-      .catch((error) => console.error("Error:", error));
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  
+
+  const handleToggle = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-      <h1 className="text-4xl font-extrabold mb-8 text-gray-900">
-        Nutrition Information
-      </h1>
-      <div className="flex items-center mb-8 space-x-4">
-        <input
-          type="text"
-          value={foodQuery}
-          onChange={(e) => setFoodQuery(e.target.value)}
-          placeholder="Enter food item"
-          className="flex-grow bg-gray-200 border border-gray-300 rounded-l-lg px-4 py-3 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
-        />
-        <button
-          onClick={() => fetchNutritionData(foodQuery)}
-          className="px-6 py-3 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-        >
-          Search
-        </button>
+    <div className="container mx-auto px-6 min-h-screen lg:px-32 py-10">
+     <div className="text-center">
+     <h1 className="text-4xl text-blue-800 font-bold mb-4">Nutrition Info</h1>
+      <p className="text-lg text-gray-700 mb-8">Your journey to a healthier lifestyle starts here</p>
+      <h2 className="text-2xl font-semibold mb-6">Browse Nutrition Food</h2>
+     </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        {foodData.map((item, index) => (
+          <div
+            key={index}
+            className={`relative flex flex-col p-4 rounded-lg transition-transform duration-159 transform hover:scale-105 hover:shadow-md cursor-pointer ${expandedIndex === index ? "bg-blue-100" : "bg-white"}`}
+            onClick={() => handleToggle(index)}
+          >
+            <img
+              src={item.img}
+              alt={item.nutritionType}
+              className="w-full h-[200px] object-cover rounded-lg mb-3"
+            />
+            <h1 className={`text-xl font-semibold mb-2 ${expandedIndex === index ? "text-blue-800" : "text-gray-800"}`}>
+              {item.nutritionType}
+            </h1>
+            <h2 className={`text-gray-600 ${expandedIndex === index ? "font-bold" : ""}`}>
+              {item.noOfRecipes}
+            </h2>
+          </div>
+        ))}
       </div>
-      {data ? (
-        data.foods && data.foods.length > 0 ? (
-          data.foods.map((item, index) => (
-            <div
-              key={index}
-              className="mb-8 p-6 border border-gray-300 rounded-lg shadow-md"
-            >
-              <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                {item.food_name}
-              </h2>
-              {item.photo ? (
+
+      {expandedIndex !== null && (
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold mb-4">Recipes:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {foodData[expandedIndex].details.map((detail, idx) => (
+              <div key={idx} className="flex flex-col bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
                 <img
-                  src={item.photo.thumb}
-                  alt={item.food_name}
-                  className=" w-[300px] h-fit object-cover mb-4 rounded-md border border-gray-200 mx-auto"
+                  src={detail.img}
+                  alt={detail.recipe}
+                  className="w-full h-[150px] object-cover rounded-lg mb-4"
                 />
-              ) : (
-                <p className="text-gray-600 mb-4">No image available</p>
-              )}
-              <div className="space-y-2 flex justify-around">
-                <div>
-                  <p className="text-blue-700 ">
-                    <strong >Calories:</strong> {item.nf_calories} kcal
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Serving Size:</strong> {item.nf_serving_size_g} g
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Fat Total:</strong> {item.nf_total_fat} g
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Fat Saturated:</strong> {item.nf_saturated_fat} g
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Protein:</strong> {item.nf_protein} g
-                  </p>
-                </div>{" "}
-                <div>
-                  <p className="text-gray-700">
-                    <strong>Sodium:</strong> {item.nf_sodium} mg
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Potassium:</strong> {item.nf_potassium} mg
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Cholesterol:</strong> {item.nf_cholesterol} mg
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Carbohydrates Total:</strong>{" "}
-                    {item.nf_total_carbohydrate} g
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Fiber:</strong> {item.nf_dietary_fiber} g
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Sugar:</strong> {item.nf_sugars} g
-                  </p>
-                </div>
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">{detail.recipe}</h2>
+                <p className="text-gray-700 mb-4">{detail.description}</p>
+                <h3 className="text-md font-semibold text-gray-900 mb-2">Ingredients</h3>
+                <ul className="list-disc list-inside mb-4 text-gray-700">
+                  {detail.ingredients.map((ingredient, i) => (
+                    <li key={i}>{ingredient}</li>
+                  ))}
+                </ul>
+                <h3 className="text-md font-semibold text-gray-900 mb-2">Steps</h3>
+                <ol className="list-decimal list-inside text-gray-700">
+                  {detail.steps.map((step, i) => (
+                    <li key={i}>{step}</li>
+                  ))}
+                </ol>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-600">No results found.</p>
-        )
-      ) : (
-        <p className="text-gray-600">Loading...</p>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

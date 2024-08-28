@@ -22,12 +22,8 @@ const LoginPage = () => {
 
       const result = await response.json();
 
-      console.log("Response Status:", response.status);
-      console.log("Response Body:", result);
-
       if (response.ok) {
         if (result.message === "Login successful") {
-          console.log("Login successful");
           navigate("/");
           login(email);
           updateEmail(email);
@@ -39,33 +35,30 @@ const LoginPage = () => {
         setErrors({ general: result.message || "Something went wrong. Please try again later." });
       }
     } catch (error) {
-      console.error("Error:", error);
       setErrors({ general: "Something went wrong. Please try again later." });
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 justify-center p-4">
-      <div className="bg-white shadow-md h-[70vh] mt-32 p-8 flex flex-col md:flex-row rounded gap-20">
-        {/* Image Section */}
-        <div className="mb-6 md:mb-0 flex items-center justify-center">
-          <img
-            src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png"
-            alt="Login"
-            className="w-[700px]"
-          />
-        </div>
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 items-center justify-center p-4">
+      <div className="hidden md:flex md:flex-1 md:items-center md:justify-center">
+        <img
+          src="https://ayushya.in/wp-content/uploads/2022/05/Homepage.png"
+          alt="Login"
+          className="w-full max-w-lg"
+        />
+      </div>
 
-        {/* Form Section */}
-        <div className="flex flex-col items-center">
-          <h1 className="text-3xl font-semibold text-gray-800 mb-6">Login</h1>
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md p-8 rounded-lg w-full max-w-md">
+          <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 text-center">Login</h1>
 
           {errors.general && (
             <p className="text-red-500 text-center mb-4">{errors.general}</p>
           )}
 
-          <form onSubmit={handleSubmit} className="w-[400px] grid grid-cols-1 gap-6 mt-32">
-            <div className="col-span-1">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
               <label
                 htmlFor="email"
                 className={`block mb-2 text-lg ${errors.email ? "text-red-500" : "text-gray-700"}`}
@@ -82,7 +75,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
+            <div>
               <label
                 htmlFor="password"
                 className={`block mb-2 text-lg ${errors.password ? "text-red-500" : "text-gray-700"}`}
@@ -99,14 +92,12 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="col-span-1">
-              <button
-                type="submit"
-                className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
-              >
-                Sign In
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+            >
+              Sign In
+            </button>
           </form>
 
           <div className="mt-6 text-center text-blue-600">
