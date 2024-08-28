@@ -17,7 +17,7 @@ const Healthcare = () => {
       navigate('/login');
       return; // Exit if not authenticated
     }
-
+// this is for chcek
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get('http://localhost:8080/profile', { params: { email } });
