@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [name, setName] = useState("Guest");
   const [doctorId, setDoctorId] = useState(null);
 
+
   const logout = () => {
     setIsAuthenticated(false);
     setEmail(null);
@@ -33,6 +34,8 @@ export const AuthProvider = ({ children }) => {
     setDoctorId(id);
     login(email); // Optional: Update login state with current email
   };
+
+
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, email, updateEmail, signupEmail, setSignupEmailAndLogin, name, updateName, doctorId, setDoctorIdAndLogin }}>

@@ -25,12 +25,15 @@ const AppointmentPage = () => {
         const response = await axios.get(`http://localhost:8080/view_dr_byid/${doctorId}`);
         setDoctor(response.data);
         console.log('Fetched Doctor ID:', doctorId);
+        // console.log(response.data);
+
       } catch (err) {
         setError('Failed to fetch doctor information.');
       }
     };
 
     const fetchUser = async () => {
+
       try {
         const userResponse = await axios.get(`http://localhost:8080/profile`, { params: { email: email } });
         setUser(userResponse.data);
