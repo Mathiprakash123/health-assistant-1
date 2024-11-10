@@ -52,7 +52,7 @@ const Dashboard = () => {
           value={sleepCycle}
           imageSrc="https://cdn.pixabay.com/photo/2020/11/12/11/15/sleep-5735224_1280.png"
           altText="Sleep Cycle"
-          link={'/report'}
+          link={'/sleepreport'}
         />
         <DashboardItem
           title="Digital Wellbeing"

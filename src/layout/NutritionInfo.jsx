@@ -63,6 +63,8 @@ const NutritionInfo = () => {
                   className="w-full h-[150px] object-cover rounded-lg mb-4"
                 />
                 <h2 className="text-lg font-semibold text-gray-800 mb-2">{detail.recipe}</h2>
+                <p className="text-gray-700 mb-4">{detail.name}</p>
+
                 <p className="text-gray-700 mb-4">{detail.description}</p>
                 <h3 className="text-md font-semibold text-gray-900 mb-2">Ingredients</h3>
                 <ul className="list-disc list-inside mb-4 text-gray-700">

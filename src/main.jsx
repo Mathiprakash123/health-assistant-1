@@ -11,6 +11,8 @@ import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import Calculator from "./extrapages/Calculator";
 import MonthlyReport from "./extrapages/MonthlyReport";
+import SleepReport from "./extrapages/SleepReport";
+
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import BookAppointment from "./extrapages/BookAppointment";
@@ -74,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "report",
         element: <MonthlyReport />,
+      },
+      {
+        path: "/sleepreport",
+        element: <SleepReport />,
       },
       {
         path: "nutrition",
