@@ -72,7 +72,7 @@ const PatientsPage = () => {
     <div>
       <DoctorNavBar name="Patients" />
       <div className="flex">
-        <aside className="w-56">
+        <aside className="w-52">
           <DoctorSidePanel />
         </aside>
         <main className="flex-1 p-4">

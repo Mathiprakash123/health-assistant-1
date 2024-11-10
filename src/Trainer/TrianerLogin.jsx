@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const TrainerLogin = () => {
   const [email, setEmail] = useState("");
@@ -31,7 +31,10 @@ const TrainerLogin = () => {
           setErrors({ general: "Invalid email or password" });
         }
       } else {
-        setErrors({ general: result.message || "Something went wrong. Please try again later." });
+        setErrors({
+          general:
+            result.message || "Something went wrong. Please try again later.",
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -51,24 +54,33 @@ const TrainerLogin = () => {
         </div>
 
         <div className="flex flex-col items-center">
-          <h1 className="text-3xl font-semibold text-gray-800 mb-6">Trainer Login</h1>
+          <h1 className="text-3xl font-semibold text-gray-800 mb-6">
+            Trainer Login
+          </h1>
 
           {errors.general && (
             <p className="text-red-500 text-center mb-4">{errors.general}</p>
           )}
 
-          <form onSubmit={handleSubmit} className="w-[400px] grid grid-cols-1 gap-6 mt-32">
+          <form
+            onSubmit={handleSubmit}
+            className="w-[400px] grid grid-cols-1 gap-6 mt-32"
+          >
             <div className="col-span-1">
               <label
                 htmlFor="email"
-                className={`block mb-2 text-lg ${errors.email ? "text-red-500" : "text-gray-700"}`}
+                className={`block mb-2 text-lg ${
+                  errors.email ? "text-red-500" : "text-gray-700"
+                }`}
               >
                 {errors.email || "Email"}
               </label>
               <input
                 type="email"
                 id="email"
-                className={`border ${errors.email ? "border-red-500" : "border-gray-300"} p-3 rounded-lg w-full bg-gray-100`}
+                className={`border ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                } p-3 rounded-lg w-full bg-gray-100`}
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -78,14 +90,18 @@ const TrainerLogin = () => {
             <div className="col-span-1">
               <label
                 htmlFor="password"
-                className={`block mb-2 text-lg ${errors.password ? "text-red-500" : "text-gray-700"}`}
+                className={`block mb-2 text-lg ${
+                  errors.password ? "text-red-500" : "text-gray-700"
+                }`}
               >
                 {errors.password || "Password"}
               </label>
               <input
                 type="password"
                 id="password"
-                className={`border ${errors.password ? "border-red-500" : "border-gray-300"} p-3 rounded-lg w-full bg-gray-100`}
+                className={`border ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                } p-3 rounded-lg w-full bg-gray-100`}
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -99,6 +115,17 @@ const TrainerLogin = () => {
               >
                 Sign In
               </button>
+            </div>
+            <div className="mt-12 text-center">
+              <p className="text-gray-700">
+                Don't have an account?
+                <Link
+                  to="/trainer/trainer_signup"
+                  className="text-blue-600 hover:underline"
+                >
+                  Sign Up
+                </Link>
+              </p>
             </div>
           </form>
         </div>

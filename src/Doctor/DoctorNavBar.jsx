@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const DoctorNavBar = ({name}) => {
   return (
     <div>
-      <div className="flex justify-between pt-5 shadow-black"> {/* Use shadow-md or other shadow classes */}
+      <div className="flex justify-between shadow-black"> {/* Use shadow-md or other shadow classes */}
         <div className="mx-[300px]">
           <h1 className="text-5xl text-primary font-semibold pt-5">{name}</h1>
         </div>

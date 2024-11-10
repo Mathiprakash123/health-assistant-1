@@ -192,7 +192,7 @@ const SignupPage = () => {
           </form>
 
           <div className="mt-6 text-center text-blue-600">
-            <Link to={"/doctor/doctorregister"} className="block hover:underline mb-2">
+            <Link to={"/doctor/doctorregiser"} className="block hover:underline mb-2">
               Sign Up As Doctor
             </Link>
             <Link to={"/trainer/trainer_signup"} className="block hover:underline">

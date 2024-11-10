@@ -29,13 +29,7 @@ const patients = [
     diagnosis: "Fever",
     time: "06:00 PM",
   },
-  {
-    id: 10,
-    image: "https://i.pinimg.com/736x/7c/2e/3f/7c2e3ff166258350a787509ad23aca3d.jpg",
-    name: "Kakashi",
-    diagnosis: "Chest Pain",
-    time: "07:00 PM",
-  },
+  
 ];
 
 const AppointmentRequest = () => {

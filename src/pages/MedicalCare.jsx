@@ -11,13 +11,33 @@ const Healthcare = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const { isAuthenticated, email } = useAuth();
+  const [appointments, setAppointments] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      if (user?.id) {
+        try {
+          console.log(user.id);
+          const response = await axios.get(`http://localhost:8080/api/appointment/appointments/user/${user.id}`);
+          setAppointments(response.data);
+        } catch (err) {
+          setError('Failed to fetch appointments');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchAppointments();
+  }, [user]);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
-      return; // Exit if not authenticated
+      return;
     }
-// this is for chcek
+
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get('http://localhost:8080/profile', { params: { email } });
@@ -37,7 +57,6 @@ const Healthcare = () => {
       }
     };
 
-    // Fetch data in sequence
     const fetchData = async () => {
       await fetchUserProfile();
       await fetchDoctors();
@@ -58,16 +77,40 @@ const Healthcare = () => {
     alert(`Calling Dr. ${doctor.name} at ${doctor.contact}`);
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
+      <div className=" py-4">
+        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Your Appointments</h1>
+        {appointments.length > 0 ? (
+          <table className="w-full bg-white shadow-md rounded">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border-b">Doctor ID</th>
+                <th className="px-4 py-2 border-b">Date</th>
+                <th className="px-4 py-2 border-b">Time</th>
+                <th className="px-4 py-2 border-b">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.map((appointment) => (
+                <tr key={appointment.id}>
+                  <td className="px-4 py-2 border-b text-center">{appointment.doctorId}</td>
+                  <td className="px-4 py-2 border-b text-center">{appointment.date}</td>
+                  <td className="px-4 py-2 border-b text-center">{appointment.time}</td>
+                  <td className="px-4 py-2 border-b text-center">{appointment.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No appointments found.</p>
+        )}
+      </div>
       <div className="mx-auto rounded-lg p-8 bg-white shadow-lg">
         <h1 className="text-3xl font-extrabold text-blue-700 mb-6 text-center">Patient Information</h1>
-
-        {/* User Information */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">User Information</h2>
           {user ? (
@@ -81,8 +124,6 @@ const Healthcare = () => {
             <p className="text-center">User profile not available.</p>
           )}
         </div>
-
-        {/* Doctors */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">Doctors</h2>
           <input

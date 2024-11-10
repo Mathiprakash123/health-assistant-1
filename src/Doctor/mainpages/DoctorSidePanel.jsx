@@ -3,8 +3,8 @@ import Image from "../../assets/logo-no-background.png";
 import { Link } from "react-router-dom";
 const DoctorSidePanel = () => {
   return (
-    <div className=" h-[100vh] w-[150px] fixed shadow-xl bg-white">
-      <img src={Image} alt="" className=" w-28 mx-4 my-10" />
+    <div className=" h-[100vh] w-[140px] fixed shadow-xl bg-white">
+      <img src={Image} alt="" className=" w-28 mx-4 my-8" />
       <div>
         <Link to={"/doctor/"}>
           <svg

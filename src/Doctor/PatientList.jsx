@@ -31,13 +31,7 @@ const patients = [
     diagnosis: "Headache",
     time: "01:00 PM",
   },
-  {
-    id: 5,
-    image: "https://img.freepik.com/premium-vector/man-face_48369-3117.jpg",
-    name: "Minato",
-    diagnosis: "Back Pain",
-    time: "02:00 PM",
-  },
+ 
 ];
 
 const PatientList = () => {
@@ -55,7 +49,7 @@ const PatientList = () => {
   }
 
   return (
-    <div className="bg-blue-50 px-6 py-4 w-[450px] h-fit mx-10 my-8 rounded-lg shadow-md">
+    <div className="bg-blue-50 px-6 py-4 h-[450px]  mx-10 my-8 rounded-lg shadow-md">
       <h1 className="text-blue-600 text-xl font-semibold mb-4">Today's Appointments</h1>
       <table className="w-full max-w-[600px] border-separate border-spacing-2">
         <thead>

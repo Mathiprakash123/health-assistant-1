@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [signupEmail, setSignupEmail] = useState(null);
   const [name, setName] = useState("Guest");
   const [doctorId, setDoctorId] = useState(null);
+  const [userId,setUserId] = useState(null);
 
 
   const logout = () => {
@@ -35,10 +36,14 @@ export const AuthProvider = ({ children }) => {
     login(email); // Optional: Update login state with current email
   };
 
+  const setUserIds = (id) => {
+    setUserId(id);
+    // login(email); // Optional: Update login state with current email
+  };
 
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, email, updateEmail, signupEmail, setSignupEmailAndLogin, name, updateName, doctorId, setDoctorIdAndLogin }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, email, updateEmail, signupEmail, setSignupEmailAndLogin, name, updateName, doctorId, setDoctorIdAndLogin ,userId}}>
       {children}
     </AuthContext.Provider>
   );
