@@ -21,11 +21,15 @@ const ProfilePage = () => {
   const [editableProfile, setEditableProfile] = useState({ ...profile });
   const [selectedImage, setSelectedImage] = useState(null); // State for holding selected image file
   const [imagePreview, setImagePreview] = useState(null); // State for the image preview
+  const [error, setError] = useState(''); // State for error handling
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login if not authenticated
+      return;
+    }
+
     if (email) {
-      console.log(email);
-      
       axios.get(`http://localhost:8080/profile`, { params: { email: email } })
         .then(response => {
           const data = response.data;
@@ -40,9 +44,10 @@ const ProfilePage = () => {
         })
         .catch(error => {
           console.error('Error fetching profile:', error);
+          setError('Failed to load profile data');
         });
     }
-  }, [email]);
+  }, [email, isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,15 +69,23 @@ const ProfilePage = () => {
   };
 
   const handleSave = () => {
+    // Validate profile data
+    if (!editableProfile.firstname || editableProfile.age <= 0) {
+      setError('Please fill in all required fields');
+      return;
+    }
+
     // Save other profile fields
     axios.put('http://localhost:8080/update_user', editableProfile)
       .then(response => {
         console.log('Profile updated successfully');
         setProfile({ ...editableProfile });
         setIsEditing(false);
+        setError(''); // Reset error
       })
       .catch(error => {
         console.error('Error updating profile:', error);
+        setError('Failed to update profile');
       });
 
     // Save image if a new one was selected
@@ -95,6 +108,7 @@ const ProfilePage = () => {
         })
         .catch(error => {
           console.error('Error uploading image:', error);
+          setError('Failed to upload image');
         });
     }
   };
@@ -130,6 +144,10 @@ const ProfilePage = () => {
             </div>
           )}
         </div>
+
+        {/* Display error message */}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
         {/* The rest of your profile form fields */}
         <div className="space-y-6">
           {Object.keys(profile).map((key) => (
@@ -169,6 +187,8 @@ const ProfilePage = () => {
             )}
           </div>
         </div>
+
+        {/* Profile action buttons */}
         <div className="flex gap-4 mt-6">
           {isEditing ? (
             <>
@@ -193,6 +213,7 @@ const ProfilePage = () => {
               Edit
             </button>
           )}
+
           {isAuthenticated && (
             <button
               onClick={handleSignOut}
